@@ -1,4 +1,4 @@
-
+package Game;
 
 import itumulator.simulator.Actor;
 import itumulator.world.World;

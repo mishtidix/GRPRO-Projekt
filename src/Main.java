@@ -1,5 +1,6 @@
 import java.awt.Color;
 
+import Game.Person;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.world.Location;
