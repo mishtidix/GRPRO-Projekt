@@ -20,8 +20,16 @@ public abstract class Entity implements NonBlocking, Actor, DynamicDisplayInform
         int x = rnd.nextInt(world.getSize());
         int y = rnd.nextInt(world.getSize());
         location = new Location(x,y);
+        while(!world.isTileEmpty(location)) {
+            x = rnd.nextInt(world.getSize());
+            y = rnd.nextInt(world.getSize());
+            location = new Location(x, y);
+        }
         if (world.isTileEmpty(location)) {
             world.setTile(location, this);
         }
+    }
+    public Location getLocation(){
+        return location;
     }
 }

@@ -4,7 +4,7 @@ import itumulator.executable.*;
 import itumulator.simulator.*;
 import java.awt.*;
 import java.util.*;
-public class Animal implements Actor {
+public class Animal extends Entity implements Actor,DynamicDisplayInformationProvider {
     public int age;
     public int count;
     public boolean isFull;
@@ -13,7 +13,8 @@ public class Animal implements Actor {
     public Location current;
     public World world;
 
-    public Animal(){
+    public Animal(World world){
+        super(world);
         this.age=0;
         this.count = 0;
         this.isFull = false;
@@ -42,7 +43,12 @@ public class Animal implements Actor {
 
         }
     }
-
+    public void moveGoal(Location goal){
+        Path path = new Path(goal, this.current);
+        Location best= path.getPath(world);
+        this.current = best;
+        world.move(this,best);
+    }
     public void aging(){
         age++;
         if(this.age % 20 == 0){
@@ -54,7 +60,7 @@ public class Animal implements Actor {
     void reproduce(World world){
         Random r = new Random();
 
-        if(this.canReproduce == true){
+        if(this.canReproduce){
             int x = r.nextInt(5);
             int y = r.nextInt(5);
             Location l = new Location(x,y);
@@ -65,7 +71,7 @@ public class Animal implements Actor {
                 l = new Location(x,y);
             }
 
-            world.setTile(l, new Animal());
+            world.setTile(l, new Animal(this.world));
             this.canReproduce = false;
         }
     }
@@ -97,4 +103,10 @@ public class Animal implements Actor {
     public int getAge(){
         return this.age;
     }
+
+    @Override
+    public DisplayInformation getInformation(){
+        return  new DisplayInformation(Color.cyan);
+    }
+
 }

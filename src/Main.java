@@ -29,17 +29,17 @@ public class Main {
         int size = 5; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm oplysningen (i px)
-        int amount = 10;
+
         Random r = new Random();
         Program p = new Program(size, display_size, delay); // opret et nyt program
         World world = p.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilfø½je ting!
 
-        Animal animal = new Animal();
+        Animal animal = new Animal(world);
 
         Location place2 = new Location(0, 2);
 
         world.setTile(place2, animal);
-        DisplayInformation sd = new DisplayInformation(Color.GRAY, "grass");
+        DisplayInformation sd = new DisplayInformation(Color.GRAY);
         DisplayInformation id = new DisplayInformation(Color.GRAY, "rabbit-small");
         //DisplayInformation ad = new DisplayInformation(Color.GRAY, "hole-small");
 
@@ -49,20 +49,13 @@ public class Main {
 
         Burrow burrow = new Burrow(world);
         burrow.randomSpawn(burrow, world);
-        for (int i = 0; i < amount; i++) {
-            int x = r.nextInt(5);
-            int y = r.nextInt(5);
-            Location l = new Location(x, y);
-
-            while (!world.isTileEmpty(l)) {
-                x = r.nextInt(5);
-                y = r.nextInt(5);
-                l = new Location(x, y);
-            }
+        Rabbit rabbit = new Rabbit(world);
+        rabbit.randomSpawn(rabbit, world);
 
 
-            world.setTile(l, new Person());
-        }
+
+
+
         p.show(); // viser selve simulationen
         for (int i = 0; i < 200; i++) {
             p.simulate();
@@ -101,8 +94,8 @@ public class Main {
         // Assuming the line has the format: N type quantity or N type min-max
         // Example: "10 rabbit 5" or "20 fox 2-5"
         String[] parts = line.split("\\s+");
-        int N = Integer.parseInt(parts[0]);
-        String type = parts[1];
+        int N = Integer.parseInt(parts[1]);
+        String type = parts[0];
         // Handle quantity or min-max accordingly
         // Your logic here...
     }

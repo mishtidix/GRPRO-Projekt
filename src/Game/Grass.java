@@ -5,6 +5,7 @@ import java.awt.*;
 
 import itumulator.simulator.*;
 import java.util.*;
+import itumulator.world.Location.*;
 
 import static itumulator.world.World.getTotalDayDuration;
 import static org.mockito.Mockito.when;
@@ -20,17 +21,11 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
      * HP: for hvor mange gange græsset skal spises før den forsvinder
      * spreadCooldown: field to track the cooldown before the grass can spread again
      */
-    public Grass(Location location, int age, World world) {
+    public Grass(Location location, World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
-        super(location, age, world);
+        super(location, world);
         this.HP = 100;
         this.spreadCooldown = 0;
-    }
-
-    @Override
-    public void die() {
-        super.die();
-
     }
 
 
@@ -46,17 +41,18 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
                 l = list.get((int)(Math.random() * list.size()));
             }
 
-            world.setTile(l, new Animal());
+            world.setTile(l, new Grass(l, world));
         }
 
     }
+
 
 
     public void beenEaten() {
         if (HP > 0) {
             HP -= 10;
             if (HP <= 0) {
-                world.delete(this);
+                super.die();
             }
         }
     }

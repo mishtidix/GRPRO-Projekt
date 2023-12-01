@@ -11,12 +11,11 @@ public abstract class Plant extends Entity {
     public Location location;
     public int age;
     public LocalDateTime plantedDateTime;
-    public World world;
 
-    public Plant(Location location, int age, World world) {
+    public Plant(Location location, World world) {
         super(world);
         this.location = location;
-        this.age = age;
+        this.age = 0;
         this.plantedDateTime = LocalDateTime.now();
     }
 
@@ -25,19 +24,15 @@ public abstract class Plant extends Entity {
     }
 
     public int getAge() {
+
         return age;
     }
 
-    public void die() { //hvis en plant eksisterer i længere end 20 world.days, så bliver den deleted fra world
-        int currentTime = world.getCurrentTime();
-        int daysPassed = currentTime / World.getTotalDayDuration();
-        int dayTimeTicks = currentTime % World.getTotalDayDuration();
-
-        if (daysPassed >= 20 && dayTimeTicks >= World.getDayDuration()) { // Logic for plant death
+    public void die() { //used to delete the plant if it gets eaten?
             world.delete(this);
         }
 
     }
 
-}
+
 

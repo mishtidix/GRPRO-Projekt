@@ -1,8 +1,8 @@
+package Game;
 import itumulator.world.*;
 import java.util.*;
 
-public class Path 
-{
+public class Path {
     Location goal;
     Location current;
     World world;
