@@ -13,7 +13,7 @@ public class Animal implements Actor {
     public Location current;
     public World world;
 
-    Animal(){
+    public Animal(){
         this.age=0;
         this.count = 0;
         this.isFull = false;

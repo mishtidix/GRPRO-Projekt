@@ -20,7 +20,8 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
      * HP: for hvor mange gange græsset skal spises før den forsvinder
      * spreadCooldown: field to track the cooldown before the grass can spread again
      */
-    public Grass(Location location, int age, World world) { //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
+    public Grass(Location location, int age, World world) {
+        //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(location, age, world);
         this.HP = 100;
         this.spreadCooldown = 0;
@@ -62,17 +63,13 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
     @Override
     public void act(World world) {
-        age++; // Increment age
 
-        // Check if it has been 20 days and nights, and initiate the dying process
-        if (world.getCurrentTime() >= World.getTotalDayDuration()) {
-            die();
-        }
     }
       
 
     @Override
     public DisplayInformation getInformation(){
+
         return new DisplayInformation(Color.GRAY, "grass");
     }
 
