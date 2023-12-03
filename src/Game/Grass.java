@@ -14,16 +14,15 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     private static final int SPREAD_PROBABILITY = 25;
     private static final int SPREAD_COOLDOWN = 5;
     private int spreadCooldown;
-    private int HP;
 
     /**
      * Creates grass at a random location
      * HP: for hvor mange gange græsset skal spises før den forsvinder
      * spreadCooldown: field to track the cooldown before the grass can spread again
      */
-    public Grass(Location location, World world) {
+    public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
-        super(location, world);
+        super(world);
         this.HP = 100;
         this.spreadCooldown = 0;
     }
@@ -41,7 +40,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
                 l = list.get((int)(Math.random() * list.size()));
             }
 
-            world.setTile(l, new Grass(l, world));
+            world.setTile(l, new Grass(world));
         }
 
     }
@@ -59,7 +58,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
     @Override
     public void act(World world) {
-
+        spread();
     }
       
 

@@ -26,8 +26,8 @@ import itumulator.world.World;
 public class Main {
 
     public static void main(String[] args) {
-        int size = 5; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int size = 10; // størrelsen af vores 'map' (dette er altid kvadratisk)
+        int delay = 600; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm oplysningen (i px)
 
         Random r = new Random();
@@ -38,7 +38,7 @@ public class Main {
 
         Location place2 = new Location(0, 2);
 
-        world.setTile(place2, animal);
+        //world.setTile(place2, animal);
         DisplayInformation sd = new DisplayInformation(Color.GRAY);
         DisplayInformation id = new DisplayInformation(Color.GRAY, "rabbit-small");
         //DisplayInformation ad = new DisplayInformation(Color.GRAY, "hole-small");
@@ -50,7 +50,11 @@ public class Main {
         Burrow burrow = new Burrow(world);
         burrow.randomSpawn(burrow, world);
         Rabbit rabbit = new Rabbit(world);
-        rabbit.randomSpawn(rabbit, world);
+        //rabbit.randomSpawn(rabbit, world);
+        Berry berry = new Berry(world);
+        berry.randomSpawn(berry, world);
+        Grass grass = new Grass(world);
+        grass.randomSpawn(grass, world);
 
 
 
