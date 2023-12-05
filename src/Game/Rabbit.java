@@ -99,4 +99,9 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             }
         }
     }
+    protected void die(){
+        Location here = location;
+        super.die(world);
+        world.setTile(here, new Carcass(world,25));
+    }
 }
