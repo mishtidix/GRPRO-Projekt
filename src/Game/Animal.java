@@ -10,7 +10,7 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
     public boolean isFull;
     public boolean canReproduce;
     public boolean sleeping;
-    public Location current;
+
     public World world;
 
     public Animal(World world){
@@ -20,35 +20,39 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
         this.isFull = false;
         this.canReproduce = false;
         this.sleeping = false;
+
     }
 
     @Override
     public void act(World world) {
         aging();
-        reproduce(world);
+        //reproduce(world);
         eat(world);
-        move(world);
-        die(world);
+
         System.out.println(age);
     }
 
     public void move(World world){
+        this.location=world.getLocation(this);
+
         Set<Location> neighbours = world.getEmptySurroundingTiles();
         ArrayList<Location> list = new ArrayList<>(neighbours);
         try{
             Location l = list.get((int)(Math.random() * list.size())); // Linje 2 og 3 kan erstattes af neighbours.toArray()[0]
-            this.current = l;
+            this.location = l;
             world.move(this,l);
-        }catch(Exception e){
+        } catch(Exception e){
 
         }
     }
+
     public void moveGoal(Location goal){
-        Path path = new Path(goal, this.current);
+        Path path = new Path(goal, this.location);
         Location best= path.getPath(world);
-        this.current = best;
+        this.location = best;
         world.move(this,best);
     }
+
     public void aging(){
         age++;
         if(this.age % 20 == 0){
@@ -76,9 +80,13 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
         }
     }
 
+    public void getHungry() {
+        // 
+    }
+
     void eat(World world){
         try{
-            if(world.containsNonBlocking(this.current)){
+            if(world.containsNonBlocking(this.location)){
                 isFull = true;
                 this.count = 0;
                 System.out.println("isfull");
@@ -92,7 +100,7 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
     }
 
     void die(World world){
-        if(this.age >= 25){
+        if(this.age >= 100){
             world.delete(this);
         }
         if(this.count== 20){

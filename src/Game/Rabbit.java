@@ -38,25 +38,28 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         }else{
         move(world);
         }*/
+        GrassTarget();
         move(world);
+        die(world);
+
 
     }
 
-    public void setBurrow(){
-        Target findBurrow = new Target(this.world, this.current, this);
+    public void BurrowTarget(){
+        Target findBurrow = new Target(this.world, this.location, this);
         //this.burrow = (Burrow)
         findBurrow.getBestTarget(burrow);
     }
 
-    public void setGrass(){
-        Target findGrass = new Target(this.world, this.current, this);
+    public void GrassTarget(){
+        Target findGrass = new Target(this.world, this.location, this);
         //this.grass = (Grass)
         findGrass.getBestTarget(grass);
     }
 
     public void eat(){
         super.eat(world);
-        if(this.current == grass.getLocation()){
+        if(this.location == grass.getLocation()){
             isFull = true;
         }
 
@@ -90,7 +93,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     public void exitBurrow(){
         if(world.getLocation(this)==null&& world.isDay()){
             if(!this.world.isTileEmpty(burrow.getLocation())){
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.current);
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                 ArrayList<Location> list = new ArrayList<>(neighbours);
                 Location l = list.get((int)(Math.random() * list.size()));
                 world.setTile(l, this);

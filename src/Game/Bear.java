@@ -6,7 +6,7 @@ import java.awt.*;
 
 import itumulator.simulator.*;
 import java.util.*;
-
+/*
 public class Bear extends Animal implements Actor, DynamicDisplayInformationProvider
 {
     Location territory;
@@ -52,4 +52,4 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
         }
         return new DisplayInformation(Color.GRAY, "bear-large");
     }
-}
+}*/

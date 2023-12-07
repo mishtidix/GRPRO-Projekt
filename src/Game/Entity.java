@@ -29,6 +29,7 @@ public abstract class Entity implements NonBlocking, Actor, DynamicDisplayInform
             world.setTile(location, this);
         }
     }
+
     public Location getLocation(){
         return location;
     }

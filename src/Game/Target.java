@@ -71,7 +71,7 @@ public class Target
 
             }
             return bestTarget;
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
         }
         return null;
     }

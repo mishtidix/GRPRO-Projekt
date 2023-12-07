@@ -4,16 +4,21 @@ import itumulator.executable.*;
 import java.awt.*;
 
 import itumulator.simulator.*;
+
+import java.lang.reflect.*;
 import java.util.*;
 import itumulator.world.Location.*;
 
 import static itumulator.world.World.getTotalDayDuration;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.when;
 
 public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayInformationProvider {
     private static final int SPREAD_PROBABILITY = 25;
     private static final int SPREAD_COOLDOWN = 5;
     private int spreadCooldown;
+    private  int age;
+    private Random rnd;
 
     /**
      * Creates grass at a random location
@@ -24,27 +29,53 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(world);
         this.HP = 100;
-        this.spreadCooldown = 0;
+        this.spreadCooldown = 100;
+        this.age = 0;
     }
 
 
     public void spread() {
         Random r = new Random();
-        if (spreadCooldown > 0) {
+        if (readyToSpread()) {
             Set<Location> neighbours = world.getSurroundingTiles();
             ArrayList<Location> list = new ArrayList<>(neighbours);
 
-            Location l = list.get((int)(Math.random() * list.size()));
+            try {
+                for (int i = 0; i < list.size(); i++) {
+                    if (!world.isTileEmpty(list.get(i)) && world.containsNonBlocking(list.get(i))) {
+                        list.remove(list.get(i));
+                    }
 
-            while(!world.isTileEmpty(l)) {
-                l = list.get((int)(Math.random() * list.size()));
+                    if (!list.isEmpty()) {
+                        Location l = list.get((int) (Math.random() * list.size()));
+                        world.setTile(l, new Grass(world));
+
+                    }
+
+                }
+                this.spreadCooldown += 100;
+
+            } catch (Exception e){
+
+                }
+
             }
-
-            world.setTile(l, new Grass(world));
-        }
 
     }
 
+    public void aging() {
+        age++;
+    }
+
+    public boolean readyToSpread() {
+        rnd = new Random();
+        if (spreadCooldown > 0) {
+            this.spreadCooldown -= rnd.nextInt(10);
+            System.out.println(spreadCooldown);
+            return false;
+        }
+        return  true;
+    }
 
 
     public void beenEaten() {
@@ -58,9 +89,10 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
     @Override
     public void act(World world) {
-        spread();
+        //spread();
+        //readyToSpread();
+        aging();
     }
-      
 
     @Override
     public DisplayInformation getInformation(){
