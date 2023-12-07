@@ -7,8 +7,7 @@ import itumulator.simulator.*;
 import java.util.*;
 
 
-public class Rabbit extends Animal implements Actor, DynamicDisplayInformationProvider
-{
+public class Rabbit extends Animal implements Actor, DynamicDisplayInformationProvider {
     Burrow burrow;
     Grass grass;
     int burrowProb;
@@ -20,44 +19,56 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     @Override
     public void act(World world) {
         super.act(world);
-        /*
-        if(world.isNight()){
-        if(burrow == null){
-        setBurrow();
+        if (world.isDay() && this.sleeping){
+            exitBurrow();
         }
-        moveGoal(burrow.getLocation());
-        }else if(!isFull && !world.isNight()) {
-        if(grass == null){
-        setGrass();
+        if(!(location==null)){
+            eat(world);
         }
-        if(grass != null){
-        moveGoal(grass.getLocation());
-        }else{
-        move(world);
-        }
-        }else{
-        move(world);
-        }*/
-        move(world);
 
+System.out.println("count:"+count);
+        if (world.isNight() && !sleeping) {
+            enterBurrow();
+            if (!sleeping) {
+    moveGoal(burrow.getLocation());
+}
+        } else if (!isFull && !sleeping) {
+                moveGoal(grass.getLocation());
+                } else{
+            if (world.isDay()) {
+                this.sleeping =false;
+                move(world);
+
+            }
+        }
+
+        super.die(world);
     }
 
-    public void setBurrow(){
-        Target findBurrow = new Target(this.world, this.current, this);
+    public void setBurrow(Burrow burrow){
+        this.burrow = burrow;
+        //Target findBurrow = new Target(this.world, this.location, this);
         //this.burrow = (Burrow)
-        findBurrow.getBestTarget(burrow);
+        //findBurrow.getBestTarget(burrow);*/
     }
 
-    public void setGrass(){
-        Target findGrass = new Target(this.world, this.current, this);
+    public void setGrass(Grass g){
+        this.grass = g;
+
+        //Target findGrass = new Target(this.world, this.location, this);
         //this.grass = (Grass)
-        findGrass.getBestTarget(grass);
+        //findGrass.getBestTarget(grass);
     }
 
-    public void eat(){
-        super.eat(world);
-        if(this.current == grass.getLocation()){
+    public void eat(World world){
+count++;
+Location grassLocation=grass.getLocation();
+        if(this.location.getX() == grassLocation.getX() && this.location.getY() == grassLocation.getY()){
             isFull = true;
+            this.count = 0;
+        }
+        if(count>10){
+            isFull = false;
         }
 
     }
@@ -81,27 +92,49 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     }
 
     public void enterBurrow(){
-        if(world.isNight() && this.getLocation().equals(burrow.getLocation())){
+        Location burrowLocation = burrow.getLocation();
+        if(this.world.isNight() && this.location.getX() ==burrowLocation.getX() && this.location.getY() == burrowLocation.getY()){
             this.sleeping = true;
-            world.remove(this);
+            this.world.remove(this);
         }
     }
 
     public void exitBurrow(){
-        if(world.getLocation(this)==null&& world.isDay()){
+
             if(!this.world.isTileEmpty(burrow.getLocation())){
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.current);
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                 ArrayList<Location> list = new ArrayList<>(neighbours);
                 Location l = list.get((int)(Math.random() * list.size()));
                 world.setTile(l, this);
             }else{
                 world.setTile(burrow.getLocation(), this);
             }
-        }
+
     }
-    protected void die(){
+    protected void die(World world){
         Location here = location;
         super.die(world);
         world.setTile(here, new Carcass(world,25));
+    }
+    protected void reproduce(World world)  {
+
+        Random r = new Random();
+
+        if(this.canReproduce){
+            int x = r.nextInt(5);
+            int y = r.nextInt(5);
+            Location l = new Location(x,y);
+
+            while(!world.isTileEmpty(l)) {
+                x = r.nextInt(5);
+                y = r.nextInt(5);
+                l = new Location(x,y);
+            }
+
+
+            world.setTile(l,new Rabbit(world));
+
+            this.canReproduce = false;
+        }
     }
 }

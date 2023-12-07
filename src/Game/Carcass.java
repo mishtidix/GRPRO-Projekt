@@ -13,13 +13,19 @@ public class Carcass extends Entity {
 
     Fungi fungi;
 
-    Carcass(World world){
+
+
+    public Carcass(World world, boolean isInfected) {
         super(world);
         this.MaxHp = 50;
         this.currentHp = 50;
-
+        this.isInfected =  isInfected;
+        if (this.isInfected){
+            this.fungi=new Fungi(world,MaxHp);
+            this.fungi.setCarcass(this);
+        }
     }
-    Carcass(World world, int Maxhp){
+    public Carcass(World world, int Maxhp){
         super(world);
         this.MaxHp = Maxhp;
         this.currentHp = Maxhp;
@@ -30,12 +36,14 @@ public class Carcass extends Entity {
     @Override
     public void act(World world) {
     Decay();
+    System.out.println(currentHp);
     }
     private void Decay(){
       currentHp= currentHp-5;
       if (isInfected){
           currentHp= currentHp-5;
-      } else if(!isInfected&&currentHp<25){
+          this.fungi.addInfectedCount();
+      } else if(currentHp<25){
           fungi = new Fungi(world, MaxHp);
           isInfected=true;
       }

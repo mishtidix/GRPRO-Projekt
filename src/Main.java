@@ -34,31 +34,42 @@ public class Main {
         Program p = new Program(size, display_size, delay); // opret et nyt program
         World world = p.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilfø½je ting!
 
-        Animal animal = new Animal(world);
-
-        Location place2 = new Location(0, 2);
-
-        world.setTile(place2, animal);
-        DisplayInformation sd = new DisplayInformation(Color.GRAY);
-        DisplayInformation id = new DisplayInformation(Color.GRAY, "rabbit-small");
-        //DisplayInformation ad = new DisplayInformation(Color.GRAY, "hole-small");
-
-        p.setDisplayInformation(Person.class, sd);
-        p.setDisplayInformation(Animal.class, id);
-        //p.setDisplayInformation(Burrow.class, ad);
-
-        Burrow burrow = new Burrow(world);
-        burrow.randomSpawn(burrow, world);
-        Rabbit rabbit = new Rabbit(world);
-        rabbit.randomSpawn(rabbit, world);
 
 
 
+String input = "carcass fungi 7-9";
+        String[] parts = input.split(" ");
+        String type = parts[0];
+        String[] quantity = parts[parts.length - 1].split("-");
 
+
+        int min = Integer.parseInt(quantity[0]);
+        int max = quantity.length > 1 ? Integer.parseInt(quantity[1]) : min;
+
+        int count = min + r.nextInt(max - min + 1);
+
+        for(int i = 0 ; i < count ; i++){
+            switch (type){
+                case "carcass":
+                    boolean isInfected = parts.length > 2 && parts[1].equals("fungi");
+                    Carcass carcass = new Carcass(world, isInfected);
+                    carcass.randomSpawn(carcass,world);
+                    break;
+                case "rabbit":
+                    Rabbit rabbit = new Rabbit(world);
+                    rabbit.randomSpawn(rabbit, world);
+                    break;
+                case "grass":
+                    Grass grass = new Grass(world);
+                    grass.randomSpawn(grass, world);
+                    break;
+            }
+        }
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 200; i++) {
             p.simulate();
+
 
 
         } // kører 200 runder, altå kaldes 'act' 200 gange for alle placerede aktører

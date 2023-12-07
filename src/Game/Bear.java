@@ -22,11 +22,11 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
 
     @Override
     public void move(World world){
-        Path path = new Path(territory, current);
+        Path path = new Path(territory, location);
         Set<Location> neighbours = path.getPathAround(world);
         ArrayList<Location> list = new ArrayList<>(neighbours);
         Location l = list.get((int)(Math.random() * list.size()));
-        this.current = l;
+        this.location = l;
         world.move(this,l);
     }
 
@@ -34,7 +34,7 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
     public void eat(){
         super.eat(this.world);
         if(!this.isFull){
-            Set<Location> neighbours = world.getEmptySurroundingTiles(this.current);
+            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
             ArrayList<Location> list = new ArrayList<>(neighbours);
             ArrayList<Entity> prey = new ArrayList<>();
             for(Location l : list){

@@ -8,13 +8,13 @@ import java.awt.*;
 import itumulator.simulator.*;
 import java.util.*;
 public abstract class Plant extends Entity {
-    public Location location;
+
     public int age;
     public LocalDateTime plantedDateTime;
 
-    public Plant(Location location, World world) {
+    public Plant( World world) {
         super(world);
-        this.location = location;
+
         this.age = 0;
         this.plantedDateTime = LocalDateTime.now();
     }

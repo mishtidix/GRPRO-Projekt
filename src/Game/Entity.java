@@ -6,7 +6,7 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import java.util.*;
-public abstract class Entity implements NonBlocking, Actor, DynamicDisplayInformationProvider {
+public abstract class Entity implements Actor, DynamicDisplayInformationProvider {
     protected World world;
     protected Location location;
     protected Random rnd;
@@ -32,4 +32,9 @@ public abstract class Entity implements NonBlocking, Actor, DynamicDisplayInform
     public Location getLocation(){
         return location;
     }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }
+

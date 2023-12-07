@@ -20,7 +20,7 @@ public void spread(){
         //hvis fungi er i en carcass så bliver infectedCount ved med at gå op
         if (!(carcass==null)){
             infectedCount= infectedCount +2;
-        } else{
+        /*} else{
             //hvis den ikke har nogen carcass, så prøver den at finde et carcass at sprede sig til
 Target target = new Target(world, location, this);
 Carcass carcass1 = (Carcass)target.getBestTargetWithinRange(carcass, 2);
@@ -30,7 +30,7 @@ if (!(carcass1==null)){
     if (!carcass1.isInfected()){
         //hvis det carcass ikke er infected så bliver det infected
         carcass1.setFungi(new Fungi(world, carcass1.getMaxHp()));
-    }
+    }*/
 }else {
     //hvis der ikke var nogen carcass så går infectedCount ned, og hvis den bliver 0 eller der under bliver den slettet
     infectedCount=infectedCount-3;
@@ -39,7 +39,7 @@ if (!(carcass1==null)){
     }
 }
         }
-}
+
 
     @Override
     public DisplayInformation getInformation() {
@@ -49,16 +49,19 @@ if (!(carcass1==null)){
        } else if (carcass == null && infectedCount>=35) {
            return new DisplayInformation(Color.red, "fungi");
        }
-        return null;
+        return new DisplayInformation(Color.green);
     }
 
     @Override
     public void act(World world) {
-    spread();
+    System.out.println(infectedCount);
+        spread();
     }
 
     public void setCarcass(Carcass carcass) {
         this.carcass = carcass;
     }
-
+public void addInfectedCount(){
+        this.infectedCount=this.infectedCount+2;
+}
 }
