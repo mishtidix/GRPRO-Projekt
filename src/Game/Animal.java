@@ -110,3 +110,4 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
     }
 
 }
+
