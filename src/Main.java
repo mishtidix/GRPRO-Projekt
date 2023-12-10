@@ -50,7 +50,7 @@ public class Main {
         Burrow burrow = new Burrow(world);
         burrow.randomSpawn(burrow, world);
         Rabbit rabbit = new Rabbit(world);
-        rabbit.randomSpawn(rabbit, world);
+        //rabbit.randomSpawn(rabbit, world);
         Berry berry = new Berry(world);
         berry.randomSpawn(berry, world);
         Grass grass = new Grass(world);

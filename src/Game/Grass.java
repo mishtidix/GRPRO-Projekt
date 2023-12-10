@@ -89,8 +89,8 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
     @Override
     public void act(World world) {
-        //spread();
-        //readyToSpread();
+        spread();
+        readyToSpread();
         aging();
     }
 
