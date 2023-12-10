@@ -33,6 +33,11 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
 
     }
 
+    @Override
+    protected void eat(World world) {
+
+    }
+
     public void setDen() {
         Target findDen = new Target(this.world, this.current, this);
         //this.den = (Den)
@@ -70,6 +75,11 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
                 canReproduce = false;
             }
         }
+    }
+
+    @Override
+    public Animal createChild() {
+        return new Wolf(world);
     }
 
     public boolean Alpha() {
