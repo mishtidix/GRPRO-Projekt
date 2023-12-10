@@ -1,8 +1,6 @@
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+
 import Game.Burrow;
 import Game.*;
 import itumulator.executable.*;
@@ -25,7 +23,13 @@ import itumulator.world.World;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+//        File file = new File("data/t1-1a.txt");
+//        BufferedReader br = new BufferedReader(new FileReader(file));
+//        String input;
+//        while ((input = br.readLine()) != null) {
+//System.out.println(input);
+//        }
         int size = 15;//tørrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 100; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm oplysningen (i px)
@@ -40,8 +44,8 @@ grass1.randomSpawn(grass1,world);
 Burrow burrow1 = new Burrow(world);
 burrow1.randomSpawn(burrow1, world);
 
-String input = "rabbit 1";
-        processInputLine(input,world);
+String input1 = "rabbit 1";
+        processInputLine(input1,world);
 
 
         p.show(); // viser selve simulationen
