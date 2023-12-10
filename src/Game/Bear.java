@@ -11,7 +11,9 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
 {
     Location territory;
     public Bear(World world, Location current){
+
         super(world);
+
         this.territory = current;
     }
     public Bear(World world){
