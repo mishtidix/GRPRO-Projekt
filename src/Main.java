@@ -42,33 +42,7 @@ burrow1.randomSpawn(burrow1, world);
 
 String input = "rabbit 1";
         processInputLine(input,world);
-//        Strivg[] parts = input.split(" ");
-//        String type = parts[0];
-//        String[] quantity = parts[parts.length - 1].split("-");
-//
-//
-//        int min = Integer.parseInt(quantity[0]);
-//        int max = quantity.length > 1 ? Integer.parseInt(quantity[1]) : min;
-//
-//        int count = min + r.nextInt(max - min + 1);
-//
-//        for(int i = 0 ; i < count ; i++){
-//            switch (type){
-//                case "carcass":
-//                    boolean isInfected = parts.length > 2 && parts[1].equals("fungi");
-//                    Carcass carcass = new Carcass(world, isInfected);
-//                    carcass.randomSpawn(carcass,world);
-//                    break;
-//                case "rabbit":
-//                    Rabbit rabbit = new Rabbit(world);
-//                    rabbit.randomSpawn(rabbit, world);
-//                    break;
-//                case "grass":
-//                    Grass grass = new Grass(world);
-//                    grass.randomSpawn(grass, world);
-//                    break;
-//            }
-//        }
+
 
         p.show(); // viser selve simulationen
         for (int i = 0; i < 200; i++) {

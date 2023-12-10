@@ -30,6 +30,22 @@ public abstract class Entity implements Actor, DynamicDisplayInformationProvider
             world.setTile(location, this);
         }
     }
+
+    public void randomSpawnNonBlocking(Object object, World world) {
+        rnd = new Random();
+        int x = rnd.nextInt(world.getSize());
+        int y = rnd.nextInt(world.getSize());
+        location = new Location(x,y);
+        while(!world.containsNonBlocking(location)) {
+            x = rnd.nextInt(world.getSize());
+            y = rnd.nextInt(world.getSize());
+            location = new Location(x, y);
+        }
+        if (world.isTileEmpty(location)) {
+            this.location = location;
+            world.setTile(location, this);
+        }
+    }
     public Location getLocation(){
         return this.location;
     }

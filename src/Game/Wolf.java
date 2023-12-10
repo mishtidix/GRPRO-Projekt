@@ -39,9 +39,9 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
     public void setDen() {
-        Target findDen = new Target(this.world, this.current, this);
+        Target findDen = new Target(this.world, this.location, this);
         //this.den = (Den)
-        findDen.getBestTarget(den);
+        findDen.getBestTarget(den.getClass());
     }
 
     private void hunt(World world) {
@@ -64,7 +64,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
 
-    void reproduce(World world) {
+    protected void reproduce(World world) {
         Random random = new Random();
         if (canReproduce && energy >= REPRODUCE_ENERGY_THRESHOLD) {
             Set<Location> emptyLocations = world.getEmptySurroundingTiles(getLocation());
