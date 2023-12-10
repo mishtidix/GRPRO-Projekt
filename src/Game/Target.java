@@ -7,11 +7,11 @@ import java.util.*;
 
 
 public class Target {
-    Location current;
-    World world;
-    int currentX;
-    int currentY;
-    Entity me;
+    private Location current;
+    private World world;
+    private int currentX;
+    private int currentY;
+    private Entity me;
 
     public Target(World world, Location current, Entity me) {
         this.current = current;
@@ -21,23 +21,19 @@ public class Target {
         currentY = current.getY();
     }
 
-    public Entity getBestTarget(Object target) {
-        Object[][][] tiles = this.world.getTiles();
+    public Entity getBestTarget(Class target) {
+        Map tiles = this.world.getEntities();
         ArrayList<Entity> targets = new ArrayList<>();
-        Entity bestTarget = this.me;
-        try {
-            for (int i = 0; i < tiles.length; i++) {
-                for (int j = 0; j < tiles[i].length; j++) {
-                    for (int k = 0; k < tiles[i][j].length; k++) {
-                        Object o = tiles[i][j][k];
-                        if (o.getClass().equals(target.getClass())) {
-                            Entity a = (Entity) o;
-                            targets.add(a);
-                        }
-                    }
-                }
-            }
+        for(Object object : tiles.keySet()){
+    if (object != null && object.getClass().equals(target)) {
+        Entity a = (Entity) object;
+        targets.add(a);
+    }
+}
 
+
+            Entity bestTarget = null;
+            if(targets.size() > 0) bestTarget = targets.get(0);
             for (int i = 0; i < targets.size(); i++) {
                 Entity o = targets.get(i);
                 Location check = o.getLocation();
@@ -77,15 +73,12 @@ public class Target {
 
             }
             return bestTarget;
-        } catch (NullPointerException e) {
-        }
-        return null;
     }
 
-    public Entity getBestTarget(List<Object> targets) {
+    public Entity getBestTarget(List<Class> targets) {
         Entity bestTarget = this.me;
         ArrayList<Entity> bestTargets = new ArrayList<>();
-        for (Object o : targets) {
+        for (Class o : targets) {
             bestTargets.add(getBestTarget(o));
         }
         for (Entity e : bestTargets) {

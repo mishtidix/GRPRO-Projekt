@@ -14,10 +14,15 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
         super(world);
         this.territory = current;
     }
+    public Bear(World world){
+        super(world);
+    }
 
     public void act(World world){
         super.act(world);
-
+if (territory== null){
+    territory = world.getLocation(this);
+}
     }
 
     @Override
@@ -30,9 +35,13 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
         world.move(this,l);
     }
 
+    @Override
+    public Animal createChild() {
+        return new Bear(world);
+    }
+
 
     public void eat(){
-        super.eat(this.world);
         if(!this.isFull){
             Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
             ArrayList<Location> list = new ArrayList<>(neighbours);

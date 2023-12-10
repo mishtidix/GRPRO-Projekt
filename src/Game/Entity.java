@@ -26,11 +26,12 @@ public abstract class Entity implements Actor, DynamicDisplayInformationProvider
             location = new Location(x, y);
         }
         if (world.isTileEmpty(location)) {
+            this.location = location;
             world.setTile(location, this);
         }
     }
     public Location getLocation(){
-        return location;
+        return this.location;
     }
 
     public void setLocation(Location location) {

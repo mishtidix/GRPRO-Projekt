@@ -27,7 +27,7 @@ public class Main {
 
     public static void main(String[] args) {
         int size = 5; // størrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 1000; // forsinkelsen mellem hver skridt af simulationen (i ms)
+        int delay = 100; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm oplysningen (i px)
 
         Random r = new Random();
@@ -35,9 +35,12 @@ public class Main {
         World world = p.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilfø½je ting!
 
 
+Grass grass1 = new Grass(world);
+grass1.randomSpawn(grass1,world);
+Burrow burrow1 = new Burrow(world);
+burrow1.randomSpawn(burrow1, world);
 
-
-String input = "carcass fungi 7-9";
+String input = "rabbit 1";
         String[] parts = input.split(" ");
         String type = parts[0];
         String[] quantity = parts[parts.length - 1].split("-");

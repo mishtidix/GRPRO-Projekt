@@ -4,7 +4,7 @@ import itumulator.executable.*;
 import itumulator.simulator.*;
 import java.awt.*;
 import java.util.*;
-public class Animal extends Entity implements Actor,DynamicDisplayInformationProvider, Cloneable {
+public abstract class Animal extends Entity implements Actor,DynamicDisplayInformationProvider, Cloneable {
     public int age;
     public int count;
     public boolean isFull;
@@ -25,6 +25,7 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
     @Override
     public void act(World world) {
         aging();
+        reproduce(world);
         System.out.println(age);
     }
 
@@ -58,19 +59,41 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
 
 
 
-    void eat(World world){
-        try{
+    protected abstract void eat(World world);
 
-        }catch (Exception e){
+    protected void reproduce(World world) {
+        if (!sleeping) {
+            if (this.canReproduce) {
+                Set<Location> neighbours = world.getEmptySurroundingTiles();
+                ArrayList<Location> list = new ArrayList<>(neighbours);
+                if (!list.isEmpty()) {
+                    Location l = list.get((int) (Math.random() * list.size()));
 
+
+                    while (!world.isTileEmpty(l)) {
+                        l = list.get((int) (Math.random() * list.size()));
+                    }
+                Animal child = createChild();
+                world.setTile(l,child);
+
+
+                    this.canReproduce = false;
+                }
+            }
         }
     }
+    public abstract Animal createChild();
 
-    void die(World world){
-        if(this.age >= 25){
+    void die(World world, int Maxhp){
+        Location here = location;
+        if(this.age >= 50){
+            world.remove(this);
+            world.setTile(here, new Carcass(world,Maxhp));;
             world.delete(this);
         }
-        if(this.count>= 20){
+        if(this.count>= 30){
+            world.remove(this);
+            world.setTile(here, new Carcass(world,Maxhp));;
             world.delete(this);
         }
     }

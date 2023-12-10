@@ -26,14 +26,14 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             eat(world);
         }
 
-System.out.println("count:"+count);
         if (world.isNight() && !sleeping) {
             enterBurrow();
             if (!sleeping) {
     moveGoal(burrow.getLocation());
 }
         } else if (!isFull && !sleeping) {
-                moveGoal(grass.getLocation());
+            moveGoal(grass.getLocation());
+
                 } else{
             if (world.isDay()) {
                 this.sleeping =false;
@@ -42,25 +42,23 @@ System.out.println("count:"+count);
             }
         }
 
-        super.die(world);
+        die(world, 50);
     }
 
-    public void setBurrow(Burrow burrow){
-        this.burrow = burrow;
-        //Target findBurrow = new Target(this.world, this.location, this);
-        //this.burrow = (Burrow)
-        //findBurrow.getBestTarget(burrow);*/
+    public void setBurrow(){
+        Target findBurrow = new Target(this.world, this.location, this);
+        this.burrow = (Burrow)findBurrow.getBestTarget(Burrow.class);
     }
 
-    public void setGrass(Grass g){
-        this.grass = g;
-
-        //Target findGrass = new Target(this.world, this.location, this);
-        //this.grass = (Grass)
-        //findGrass.getBestTarget(grass);
+    public void setGrass(){
+        Target findGrass = new Target(this.world, this.location, this);
+        this.grass = (Grass)findGrass.getBestTarget(Grass.class);
     }
 
     public void eat(World world){
+        if (grass == null){
+            setGrass();
+        }
 count++;
 Location grassLocation=grass.getLocation();
         if(this.location.getX() == grassLocation.getX() && this.location.getY() == grassLocation.getY()){
@@ -70,7 +68,7 @@ Location grassLocation=grass.getLocation();
         if(count>10){
             isFull = false;
         }
-
+System.out.println("count" +count);
     }
 
     @Override
@@ -79,6 +77,10 @@ Location grassLocation=grass.getLocation();
             return new DisplayInformation(Color.GRAY, "rabbit-small");
         }
         return new DisplayInformation(Color.GRAY, "rabbit-large");
+    }
+
+    public Animal createChild(){
+        return new Rabbit(world);
     }
 
     public void digBurrow(){
@@ -92,12 +94,16 @@ Location grassLocation=grass.getLocation();
     }
 
     public void enterBurrow(){
-        Location burrowLocation = burrow.getLocation();
-        if(this.world.isNight() && this.location.getX() ==burrowLocation.getX() && this.location.getY() == burrowLocation.getY()){
-            this.sleeping = true;
-            this.world.remove(this);
+        if(burrow == null) {
+            setBurrow();
         }
-    }
+            Location burrowLocation = burrow.getLocation();
+            if (this.world.isNight() && this.location.getX() == burrowLocation.getX() && this.location.getY() == burrowLocation.getY()) {
+                this.sleeping = true;
+                this.world.remove(this);
+            }
+        }
+
 
     public void exitBurrow(){
 
@@ -111,30 +117,6 @@ Location grassLocation=grass.getLocation();
             }
 
     }
-    protected void die(World world){
-        Location here = location;
-        super.die(world);
-        world.setTile(here, new Carcass(world,25));
-    }
-    protected void reproduce(World world)  {
-
-        Random r = new Random();
-
-        if(this.canReproduce){
-            int x = r.nextInt(5);
-            int y = r.nextInt(5);
-            Location l = new Location(x,y);
-
-            while(!world.isTileEmpty(l)) {
-                x = r.nextInt(5);
-                y = r.nextInt(5);
-                l = new Location(x,y);
-            }
 
 
-            world.setTile(l,new Rabbit(world));
-
-            this.canReproduce = false;
-        }
-    }
 }
