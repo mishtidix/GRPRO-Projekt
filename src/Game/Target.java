@@ -37,6 +37,7 @@ public class Target {
             if(targets.size() > 0) bestTarget = targets.get(0);
             for (int i = 0; i < targets.size(); i++) {
                 Entity o = targets.get(i);
+                if (o.getLocation()== null){o.setLocation(world.getLocation(o));}
                 Location check = o.getLocation();
                 Location best = bestTarget.getLocation();
                 int bX;
@@ -121,29 +122,29 @@ public class Target {
         return bestTarget;
     }
 
-    public Entity getBestTargetWithinRange(Object target, int Range) {
-        Object[][][] tiles = this.world.getTiles();
+    public Entity getBestTargetWithinRange(Class target, int Range) {
+int mlX = me.getLocation().getX();
+int mlY = me.getLocation().getY();
+        Map tiles = this.world.getEntities();
         ArrayList<Entity> targets = new ArrayList<>();
-        Entity bestTarget = this.me;
-        Location myLocation = this.me.getLocation();
-        int mlX = myLocation.getX();
-        int mlY = myLocation.getY();
-        try {
-            for (int i = 0; i < tiles.length; i++) {
-                for (int j = 0; j < tiles[i].length; j++) {
-                    for (int k = 0; k < tiles[i][j].length; k++) {
-                        Object o = tiles[i][j][k];
-                        if (o.getClass().equals(target.getClass())) {
-                            Entity a = (Entity) o;
-                            targets.add(a);
-                        }
-                    }
-                }
+        for(Object object : tiles.keySet()){
+            if (object != null && object.getClass().equals(target)) {
+                Entity a = (Entity) object;
+                targets.add(a);
             }
-            for (Entity e : targets){
+        }
+if (targets.size()<= 0){
+    return null;
+}
+
+        Entity bestTarget = null;
+        if(!targets.isEmpty()) bestTarget = targets.get(0);
+
+        for (Entity e : targets){
                 int distX; int distY;
-                int X = e.getLocation().getX();
-                int Y = e.getLocation().getY();
+                Location eloc =world.getLocation(e);
+                int X = eloc.getX();
+                int Y = eloc.getY();
                 if(X<mlX){
                     distX = mlX-X;
                 }else{
@@ -158,10 +159,13 @@ public class Target {
                     targets.remove(e);
                 }
             }
+        if (targets.size()== 1){
+            return targets.get(0);
+        }
             for (int i = 0; i < targets.size(); i++) {
                 Entity o = targets.get(i);
-                Location check = o.getLocation();
-                Location best = bestTarget.getLocation();
+                Location check = world.getLocation(o);
+                Location best = world.getLocation(bestTarget);
                 int bX;
                 int bY;
                 int cX;
@@ -197,10 +201,6 @@ public class Target {
 
             }
             return bestTarget;
-        } catch (NullPointerException e) {
-
         }
-        return null;
-    }
 
 }

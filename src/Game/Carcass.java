@@ -35,7 +35,9 @@ public class Carcass extends Entity {
 
     @Override
     public void act(World world) {
-    Decay();
+        this.location = world.getLocation(this);
+        Decay();
+
     }
     private void Decay(){
         if (currentHp<= 0){
@@ -47,9 +49,10 @@ public class Carcass extends Entity {
           this.fungi.addInfectedCount();
       } else if(currentHp<25){
           fungi = new Fungi(world, MaxHp);
+          fungi.setCarcass(this);
           isInfected=true;
       }
-
+System.out.println(currentHp);
     }
     public void beingEaten(){
         currentHp= currentHp-10;

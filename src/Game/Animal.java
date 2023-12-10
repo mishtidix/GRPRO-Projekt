@@ -10,6 +10,8 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     public boolean isFull;
     public boolean canReproduce;
     public boolean sleeping;
+    protected int maxCount;
+    protected int MaxHp;
 
 
 
@@ -28,22 +30,22 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         if (!sleeping) {
             reproduce(world);
         }
-        System.out.println(age);
+
     }
 
     public void move(World world){
-        try{
+
         this.location = world.getLocation(this);
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
+        Set<Location> neighbours = world.getEmptySurroundingTiles(location);
         ArrayList<Location> list = new ArrayList<>(neighbours);
         Location l = list.get((int)(Math.random() * list.size()));
-
+while (!world.isTileEmpty(l)){
+    l = list.get((int)(Math.random() * list.size()));
+}
             this.location = l;
-            System.out.println(l);
-            world.move(this,l);
-        }catch(Exception e){
 
-        }
+            world.move(this,l);
+
     }
     public void moveGoal(Location goal){
         if (goal != null) {
@@ -91,17 +93,16 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     }
     public abstract Animal createChild();
 
-    void die(World world, int Maxhp) {
+    void die(World world, int Carcasshp) {
         if (!sleeping && location != null) {
             Location here = location;
-            if (this.age >= 50) {
+            if (this.age >= MaxHp) {
                 world.remove(this);
-                world.setTile(here, new Carcass(world, Maxhp));
+                world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
-            }
-            if (this.count >= 30) {
+            }else if (this.count >= maxCount) {
                 world.remove(this);
-                world.setTile(here, new Carcass(world, Maxhp));
+                world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }
         }

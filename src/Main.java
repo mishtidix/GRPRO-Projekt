@@ -23,29 +23,32 @@ import itumulator.world.World;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
-//        File file = new File("data/t1-1a.txt");
-//        BufferedReader br = new BufferedReader(new FileReader(file));
-//        String input;
-//        while ((input = br.readLine()) != null) {
-//System.out.println(input);
-//        }
-        int size = 15;//tørrelsen af vores 'map' (dette er altid kvadratisk)
-        int delay = 100; // forsinkelsen mellem hver skridt af simulationen (i ms)
-        int display_size = 800; // skærm oplysningen (i px)
+    public static void main(String[] args) throws IOException {
+        World world = new World(1);
+        Program p = new Program(1,100,800);
+        File file = new File("data/t1-2cde.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String input;
+        int lineCount = 0;
+        while ((input = br.readLine()) != null) {
+            lineCount++;
+            if (lineCount==1){
+                int size = Integer.parseInt(input);//tørrelsen af vores 'map' (dette er altid kvadratisk)
+                int delay = 100; // forsinkelsen mellem hver skridt af simulationen (i ms)
+                int display_size = 800; // skærm oplysningen (i px)
 
 
-        Program p = new Program(size, display_size, delay); // opret et nyt program
-        World world = p.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilfø½je ting!
+                p = new Program(size, display_size, delay); // opret et nyt program
+                world = p.getWorld();
+            } else if (lineCount>=2){
+                processInputLine(input,world);
+            }
+
+        }
+        // hiv verdenen ud, som er der hvor vi skal tilfø½je ting!
 
 
-Grass grass1 = new Grass(world);
-grass1.randomSpawn(grass1,world);
-Burrow burrow1 = new Burrow(world);
-burrow1.randomSpawn(burrow1, world);
 
-String input1 = "rabbit 1";
-        processInputLine(input1,world);
 
 
         p.show(); // viser selve simulationen
@@ -107,7 +110,7 @@ String input1 = "rabbit 1";
                     break;
                 case "grass":
                     Grass grass = new Grass(world);
-                    grass.randomSpawn(grass, world);
+                    grass.randomSpawnNonBlocking(grass, world);
                     break;
             }
         }
