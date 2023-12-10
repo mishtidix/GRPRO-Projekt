@@ -9,6 +9,7 @@ import java.util.*;
 
 public class Rabbit extends Animal implements Actor, DynamicDisplayInformationProvider {
     Burrow burrow;
+    int i = 0;
     Grass grass;
     int burrowProb;
     public Rabbit(World world){
@@ -21,8 +22,11 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     @Override
     public void act(World world) {
         super.act(world);
-        if (world.isDay() && this.sleeping){
+        i++;
+        System.out.println(i);
+        if (world.isDay() && sleeping){
             exitBurrow();
+            System.out.println(this.location);
         }
         if(!(location==null)){
             eat(world);
@@ -37,7 +41,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
                     move(world);
                 }
             }
-        } else if (!isFull && !sleeping) {
+        } else if (!isFull && !sleeping && location!=null) {
             if (grass==null){
                 setLocation(world.getLocation(this));
                 setGrass();
@@ -49,7 +53,6 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             }
         } else{
             if (world.isDay()) {
-                this.sleeping =false;
                 move(world);
 
             }
@@ -120,6 +123,7 @@ count++;
             Location burrowLocation = burrow.getLocation();
             if (this.world.isNight() && this.location.getX() == burrowLocation.getX() && this.location.getY() == burrowLocation.getY()) {
                 this.sleeping = true;
+                this.location = null;
                 this.world.remove(this);
             }
         }
@@ -129,16 +133,24 @@ count++;
     public void exitBurrow(){
         if(this.world.isTileEmpty(burrow.getLocation())) {
             world.setTile(burrow.getLocation(), this);
+            this.sleeping=false;
+            this.location = burrow.getLocation();
         }else if(!this.world.isTileEmpty(burrow.getLocation())){
+            try {
                 Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
                 if (!neighbours.isEmpty()) {
                     ArrayList<Location> list = new ArrayList<>(neighbours);
                     Location l = list.get((int) (Math.random() * list.size()));
-                    while (!world.isTileEmpty(l)){
-                        l = list.get((int)(Math.random() * list.size()));
+                    while (!world.isTileEmpty(l)) {
+                        l = list.get((int) (Math.random() * list.size()));
                     }
+                    this.sleeping = false;
                     world.setTile(l, this);
+                    this.location = l;
                 }
+            }catch (Exception exception){
+                System.out.println(exception.getMessage());
+            }
             }
 
     }

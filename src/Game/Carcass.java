@@ -52,7 +52,7 @@ public class Carcass extends Entity {
           fungi.setCarcass(this);
           isInfected=true;
       }
-System.out.println(currentHp);
+
     }
     public void beingEaten(){
         currentHp= currentHp-10;

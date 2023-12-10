@@ -26,7 +26,7 @@ public void spread() {
         //hvis den ikke har nogen carcass, så prøver den at finde et carcass at sprede sig til
         this.location = world.getLocation(this);
         Target target = new Target(world, location, this);
-        Carcass carcass1 = (Carcass) target.getBestTargetWithinRange(Carcass.class, 2);
+        Carcass carcass1 = (Carcass) target.getBestTarget(Carcass.class);
         if (!(carcass1 == null)) {
             //hvis det lykkes at finde et nyt carcass, så går infectedCount op
             infectedCount = infectedCount + 2;
@@ -57,7 +57,7 @@ public void spread() {
 
     @Override
     public void act(World world) {
-    System.out.println(infectedCount);
+
         spread();
     }
 

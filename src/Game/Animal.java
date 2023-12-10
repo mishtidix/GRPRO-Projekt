@@ -33,19 +33,21 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
 
     }
 
-    public void move(World world){
+    public void move(World world) {
 
         this.location = world.getLocation(this);
         Set<Location> neighbours = world.getEmptySurroundingTiles(location);
         ArrayList<Location> list = new ArrayList<>(neighbours);
-        Location l = list.get((int)(Math.random() * list.size()));
-while (!world.isTileEmpty(l)){
-    l = list.get((int)(Math.random() * list.size()));
-}
+        if (!list.isEmpty()) {
+            Location l = list.get((int) (Math.random() * list.size()));
+            while (!world.isTileEmpty(l)) {
+                l = list.get((int) (Math.random() * list.size()));
+            }
             this.location = l;
 
-            world.move(this,l);
+            world.move(this, l);
 
+        }
     }
     public void moveGoal(Location goal){
         if (goal != null) {
@@ -97,10 +99,12 @@ while (!world.isTileEmpty(l)){
         if (!sleeping && location != null) {
             Location here = location;
             if (this.age >= MaxHp) {
+                System.out.println(here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }else if (this.count >= maxCount) {
+                System.out.println(here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);

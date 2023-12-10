@@ -20,41 +20,46 @@ public class Path {
         int bX;
         int bY;
         Location best = this.current;
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
-        ArrayList<Location> list = new ArrayList<>(neighbours);
-        for(Location i : list){
-            if(i.getX()<gX){
-                iX = gX - i.getX();
-            }else{
-                iX = i.getX() - gX;
-            }
-            if(i.getY()<gY){
-                iY = gY - i.getY();
-            }else{
-                iY = i.getY() - gY;
-            }
-            if(best.getX()<gX){
-                bX = gX - best.getX();
-            }else{
-                bX = best.getX() - gX;
-            }
-            if(best.getY()<gY){
-                bY = gY - best.getY();
-            }else{
-                bY = best.getY() - gY;
-            }
+        try {
+            Set<Location> neighbours = world.getEmptySurroundingTiles();
+            ArrayList<Location> list = new ArrayList<>(neighbours);
+            for (Location i : list) {
+                if (world.isTileEmpty(i)) {
+                    if (i.getX() < gX) {
+                        iX = gX - i.getX();
+                    } else {
+                        iX = i.getX() - gX;
+                    }
+                    if (i.getY() < gY) {
+                        iY = gY - i.getY();
+                    } else {
+                        iY = i.getY() - gY;
+                    }
+                    if (best.getX() < gX) {
+                        bX = gX - best.getX();
+                    } else {
+                        bX = best.getX() - gX;
+                    }
+                    if (best.getY() < gY) {
+                        bY = gY - best.getY();
+                    } else {
+                        bY = best.getY() - gY;
+                    }
 
-            if(iX < bX && iY  < bY && iX >=0 && iY >= 0){
-                best = i;
+                    if (iX < bX && iY < bY && iX >= 0 && iY >= 0) {
+                        best = i;
 
-            } else if(iX < bX && iY  <=bY && iX >=0 || iY  < bY && iX <= bX && iY >= 0){
-                best = i;
+                    } else if (iX < bX && iY <= bY && iX >= 0 || iY < bY && iX <= bX && iY >= 0) {
+                        best = i;
+                    }
+                }
             }
-
+        }catch (Exception e){
+            System.out.println("test");
         }
-
         return best;
     }
+
     public Set<Location> getPathAround(World world){
         int cX = this.current.getX();
         int cY = this.current.getY();

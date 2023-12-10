@@ -34,7 +34,7 @@ public class Main {
             lineCount++;
             if (lineCount==1){
                 int size = Integer.parseInt(input);//tørrelsen af vores 'map' (dette er altid kvadratisk)
-                int delay = 100; // forsinkelsen mellem hver skridt af simulationen (i ms)
+                int delay = 200; // forsinkelsen mellem hver skridt af simulationen (i ms)
                 int display_size = 800; // skærm oplysningen (i px)
 
 
@@ -59,29 +59,6 @@ public class Main {
 
         } // kører 200 runder, altå kaldes 'act' 200 gange for alle placerede aktører
 
-//        String folderPath = "data/";
-//
-//        // List of input files
-//        String[] inputFileNames = {
-//                "t1-1a.txt", "t1-1b.txt", "t1-1c.txt", "t1-1d.txt",
-//                "t1-2a.txt", "t1-2b.txt", "t1-2cde.txt", "t1-2fg.txt",
-//                "t1-3a.txt", "t1-3b.txt", "tf1-1.txt"
-//        };
-//
-//        // Process each input file
-//        for (String fileName : inputFileNames) {
-//            String filePath = folderPath + fileName;
-//
-//            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-//                // Read and process each line of the file
-//                String line;
-//                while ((line = reader.readLine()) != null) {
-//                    processInputLine(line);
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
   }
 
     // Method to process each line of input
