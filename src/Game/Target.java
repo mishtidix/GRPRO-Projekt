@@ -17,6 +17,7 @@ public class Target {
         this.current = current;
         this.world = world;
         this.me = me;
+
         currentX = current.getX();
         currentY = current.getY();
     }

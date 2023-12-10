@@ -32,7 +32,11 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     moveGoal(burrow.getLocation());
 }
         } else if (!isFull && !sleeping) {
-            moveGoal(grass.getLocation());
+            if (grass==null){
+                setLocation(world.getLocation(this));
+                setGrass();
+            }
+                moveGoal(grass.getLocation());
 
                 } else{
             if (world.isDay()) {
@@ -106,14 +110,17 @@ System.out.println("count" +count);
 
 
     public void exitBurrow(){
-
-            if(!this.world.isTileEmpty(burrow.getLocation())){
+        if(this.world.isTileEmpty(burrow.getLocation())) {
+            world.setTile(burrow.getLocation(), this);
+        }else if(!this.world.isTileEmpty(burrow.getLocation())){
                 Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
-                ArrayList<Location> list = new ArrayList<>(neighbours);
-                Location l = list.get((int)(Math.random() * list.size()));
-                world.setTile(l, this);
+                if (!neighbours.isEmpty()) {
+                    ArrayList<Location> list = new ArrayList<>(neighbours);
+                    Location l = list.get((int) (Math.random() * list.size()));
+                    world.setTile(l, this);
+                }
             }else{
-                world.setTile(burrow.getLocation(), this);
+
             }
 
     }

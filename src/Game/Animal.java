@@ -25,7 +25,9 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     @Override
     public void act(World world) {
         aging();
-        reproduce(world);
+        if (!sleeping) {
+            reproduce(world);
+        }
         System.out.println(age);
     }
 
@@ -44,10 +46,14 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         }
     }
     public void moveGoal(Location goal){
-        Path path = new Path(goal, this.location);
-        Location best= path.getPath(this.world);
-        this.location = best;
-        world.move(this,best);
+        if (goal != null) {
+            Path path = new Path(goal, this.location);
+            Location best = path.getPath(this.world);
+            this.location = best;
+            world.move(this, best);
+        }else {
+            this.move(world);
+        }
     }
     public void aging(){
         age++;
@@ -64,6 +70,7 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     protected void reproduce(World world) {
         if (!sleeping) {
             if (this.canReproduce) {
+                world.setCurrentLocation(this.getLocation());
                 Set<Location> neighbours = world.getEmptySurroundingTiles();
                 ArrayList<Location> list = new ArrayList<>(neighbours);
                 if (!list.isEmpty()) {
@@ -84,17 +91,19 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     }
     public abstract Animal createChild();
 
-    void die(World world, int Maxhp){
-        Location here = location;
-        if(this.age >= 50){
-            world.remove(this);
-            world.setTile(here, new Carcass(world,Maxhp));;
-            world.delete(this);
-        }
-        if(this.count>= 30){
-            world.remove(this);
-            world.setTile(here, new Carcass(world,Maxhp));;
-            world.delete(this);
+    void die(World world, int Maxhp) {
+        if (!sleeping && location != null) {
+            Location here = location;
+            if (this.age >= 50) {
+                world.remove(this);
+                world.setTile(here, new Carcass(world, Maxhp));
+                world.delete(this);
+            }
+            if (this.count >= 30) {
+                world.remove(this);
+                world.setTile(here, new Carcass(world, Maxhp));
+                world.delete(this);
+            }
         }
     }
 

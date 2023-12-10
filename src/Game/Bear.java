@@ -36,6 +36,11 @@ if (territory== null){
     }
 
     @Override
+    protected void eat(World world) {
+
+    }
+
+    @Override
     public Animal createChild() {
         return new Bear(world);
     }
