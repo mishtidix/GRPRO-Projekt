@@ -11,32 +11,48 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
 {
     Location territory;
     public Bear(World world, Location current){
-        super(world, current);
+
+        super(world);
+
         this.territory = current;
+    }
+    public Bear(World world){
+        super(world);
     }
 
     public void act(World world){
         super.act(world);
-
+if (territory== null){
+    territory = world.getLocation(this);
+}
     }
 
     @Override
     public void move(World world){
-        Path path = new Path(territory, current);
+        Path path = new Path(territory, location);
         Set<Location> neighbours = path.getPathAround(world);
         ArrayList<Location> list = new ArrayList<>(neighbours);
         Location l = list.get((int)(Math.random() * list.size()));
-        this.current = l;
+        this.location = l;
         world.move(this,l);
     }
 
     @Override
+    protected void eat(World world) {
+
+    }
+
+    @Override
+    public Animal createChild() {
+        return new Bear(world);
+    }
+
+
     public void eat(){
-        super.eat();
         if(!this.isFull){
-            Set<Location> neighbours = world.getEmptySurroundingTiles(this.current);
+            Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
             ArrayList<Location> list = new ArrayList<>(neighbours);
-            ArrayList<> prey = new ArrayList<>();
+            ArrayList<Entity> prey = new ArrayList<>();
             for(Location l : list){
                 if(world.getTile(l) instanceof Animal){
 

@@ -7,8 +7,7 @@ import itumulator.simulator.*;
 import java.util.*;
 
 
-public class Rabbit extends Animal implements Actor, DynamicDisplayInformationProvider
-{
+public class Rabbit extends Animal implements Actor, DynamicDisplayInformationProvider {
     Burrow burrow;
     Grass grass;
     int burrowProb;
@@ -20,46 +19,60 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     @Override
     public void act(World world) {
         super.act(world);
-        /*
-        if(world.isNight()){
-        if(burrow == null){
-        setBurrow();
+        if (world.isDay() && this.sleeping){
+            exitBurrow();
         }
-        moveGoal(burrow.getLocation());
-        }else if(!isFull && !world.isNight()) {
-        if(grass == null){
-        setGrass();
+        if(!(location==null)){
+            eat(world);
         }
-        if(grass != null){
-        moveGoal(grass.getLocation());
-        }else{
-        move(world);
-        }
-        }else{
-        move(world);
-        }*/
-        move(world);
 
+        if (world.isNight() && !sleeping) {
+            enterBurrow();
+            if (!sleeping) {
+    moveGoal(burrow.getLocation());
+}
+        } else if (!isFull && !sleeping) {
+            if (grass==null){
+                setLocation(world.getLocation(this));
+                setGrass();
+            }
+                moveGoal(grass.getLocation());
+
+                } else{
+            if (world.isDay()) {
+                this.sleeping =false;
+                move(world);
+
+            }
+        }
+
+        die(world, 50);
     }
 
     public void setBurrow(){
-        Target findBurrow = new Target(this.world, this.current, this);
-        //this.burrow = (Burrow)
-        findBurrow.getBestTarget(burrow);
+        Target findBurrow = new Target(this.world, this.location, this);
+        this.burrow = (Burrow)findBurrow.getBestTarget(Burrow.class);
     }
 
     public void setGrass(){
-        Target findGrass = new Target(this.world, this.current, this);
-        //this.grass = (Grass)
-        findGrass.getBestTarget(grass);
+        Target findGrass = new Target(this.world, this.location, this);
+        this.grass = (Grass)findGrass.getBestTarget(Grass.class);
     }
 
-    public void eat(){
-        super.eat(world);
-        if(this.current == grass.getLocation()){
-            isFull = true;
+    public void eat(World world){
+        if (grass == null){
+            setGrass();
         }
-
+count++;
+Location grassLocation=grass.getLocation();
+        if(this.location.getX() == grassLocation.getX() && this.location.getY() == grassLocation.getY()){
+            isFull = true;
+            this.count = 0;
+        }
+        if(count>10){
+            isFull = false;
+        }
+System.out.println("count" +count);
     }
 
     @Override
@@ -68,6 +81,10 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             return new DisplayInformation(Color.GRAY, "rabbit-small");
         }
         return new DisplayInformation(Color.GRAY, "rabbit-large");
+    }
+
+    public Animal createChild(){
+        return new Rabbit(world);
     }
 
     public void digBurrow(){
@@ -81,22 +98,32 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     }
 
     public void enterBurrow(){
-        if(world.isNight() && this.getLocation().equals(burrow.getLocation())){
-            this.sleeping = true;
-            world.remove(this);
+        if(burrow == null) {
+            setBurrow();
         }
-    }
-
-    public void exitBurrow(){
-        if(world.getLocation(this)==null&& world.isDay()){
-            if(!this.world.isTileEmpty(burrow.getLocation())){
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.current);
-                ArrayList<Location> list = new ArrayList<>(neighbours);
-                Location l = list.get((int)(Math.random() * list.size()));
-                world.setTile(l, this);
-            }else{
-                world.setTile(burrow.getLocation(), this);
+            Location burrowLocation = burrow.getLocation();
+            if (this.world.isNight() && this.location.getX() == burrowLocation.getX() && this.location.getY() == burrowLocation.getY()) {
+                this.sleeping = true;
+                this.world.remove(this);
             }
         }
+
+
+    public void exitBurrow(){
+        if(this.world.isTileEmpty(burrow.getLocation())) {
+            world.setTile(burrow.getLocation(), this);
+        }else if(!this.world.isTileEmpty(burrow.getLocation())){
+                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                if (!neighbours.isEmpty()) {
+                    ArrayList<Location> list = new ArrayList<>(neighbours);
+                    Location l = list.get((int) (Math.random() * list.size()));
+                    world.setTile(l, this);
+                }
+            }else{
+
+            }
+
     }
+
+
 }
