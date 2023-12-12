@@ -20,9 +20,11 @@ public class Path {
         int bX;
         int bY;
         Location best = this.current;
-        try {
+        world.setCurrentLocation(this.current);
+
             Set<Location> neighbours = world.getEmptySurroundingTiles();
             ArrayList<Location> list = new ArrayList<>(neighbours);
+            if (!list.isEmpty()){best=list.get(0);}
             for (Location i : list) {
                 if (world.isTileEmpty(i)) {
                     if (i.getX() < gX) {
@@ -54,9 +56,7 @@ public class Path {
                     }
                 }
             }
-        }catch (Exception e){
-            System.out.println("test");
-        }
+if (best==current){System.out.println("fail");}
         return best;
     }
 

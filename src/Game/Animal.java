@@ -61,7 +61,7 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     }
     public void aging(){
         age++;
-        if(this.age % 20 == 0){
+        if(this.age % 20 == 0 && this.age<=30){
             this.canReproduce = true;
         }
 
@@ -86,6 +86,7 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
                     }
                 Animal child = createChild();
                 world.setTile(l,child);
+                child.setLocation(l);
 
 
                     this.canReproduce = false;
@@ -99,12 +100,12 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         if (!sleeping && location != null) {
             Location here = location;
             if (this.age >= MaxHp) {
-                System.out.println(here);
+                System.out.println("death: "+here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }else if (this.count >= maxCount) {
-                System.out.println(here);
+                System.out.println("death: "+here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
