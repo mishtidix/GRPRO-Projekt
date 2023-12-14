@@ -20,26 +20,45 @@ class GrassTest {
     }
 
     @Test
+    public void grassSpawns() {
+        Location initLoc = world.getLocation(grass);
+        assertNotNull(initLoc);
+    }
+
+    @Test
     public void grassSpreading() {
         Location initLoc = world.getLocation(grass);
 
+        grass.setSpreadCooldown();
+        world.setCurrentLocation(initLoc);
+        grass.spread();
+
         Set<Location> neighbours = world.getSurroundingTiles();
-        ArrayList<Location> liste = new ArrayList<>(neighbours);
+        ArrayList<Location> list = new ArrayList<>(neighbours);
 
-
-        for (int i = 0; i < 12; i++) {
-            grass.act(world);
+        for (int i = 0; i < list.size(); i++) {
+            if (!world.containsNonBlocking(list.get(i))) {
+                list.remove(list.get(i));
+            }
         }
 
-        assertNotNull(world.getTile(initLoc));
-
-
+        assertFalse(list.isEmpty());
+        assertNotNull(initLoc);
     }
 
     @Test
     public void grassGetsEaten() {
-        Rabbit rabbit = new Rabbit(world);
-        rabbit.randomSpawn(rabbit, world);
+        Location initLoc = world.getLocation(grass);
+
+        grass.setHP();
+        grass.beenEaten();
+
+        Location gotEaten = world.getLocation(grass);
+
+        assertNotNull(initLoc);
+        assertNull(gotEaten);
+
+
 
     }
 

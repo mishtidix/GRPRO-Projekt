@@ -86,12 +86,21 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
         }
     }
 
+    public void setSpreadCooldown() {
+        spreadCooldown = 0;
+    }
+
+    public void setHP() {
+        HP = 0;
+    }
+
     @Override
     public void act(World world) {
         this.location=world.getLocation(this);
         spread();
         readyToSpread();
         aging();
+        beenEaten();
     }
 
     @Override

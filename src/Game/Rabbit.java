@@ -61,6 +61,11 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         die(world, 50);
     }
 
+    public int getHealth() {
+        return MaxHp;
+    }
+
+
     public void setBurrow(){
         digBurrow();
         Target findBurrow = new Target(this.world, this.location, this);
@@ -99,9 +104,8 @@ count++;
         return new DisplayInformation(Color.GRAY, "rabbit-large");
     }
 
-    public Animal createChild(){
-        return new Rabbit(world);
-    }
+    public Animal createChild(){ return new Rabbit(world);}
+
 
     public void digBurrow(){
         if(burrowProb <= 0 && !world.containsNonBlocking(this.getLocation())){
@@ -153,6 +157,10 @@ count++;
             }
             }
 
+    }
+
+    public void setMaxHP () {
+        MaxHp = 0;
     }
 
 

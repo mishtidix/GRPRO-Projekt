@@ -120,6 +120,8 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         this.age = age;
     }
 
+   // public int getHealth(int MaxHp) { this.MaxHp = MaxHp; }
+
 
     @Override
     public DisplayInformation getInformation(){

@@ -37,10 +37,12 @@ public class Main {
         Burrow burrow = new Burrow(world);
         burrow.randomSpawn(burrow, world);*/
 
-        Grass grass = new Grass(world);
-        grass.randomSpawnNonBlocking(grass, world);
+
 
         p.show(); // viser selve simulationen
+
+
+
 
         for (int i = 0; i < 200; i++) {
         p.simulate();
