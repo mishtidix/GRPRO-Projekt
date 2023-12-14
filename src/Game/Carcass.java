@@ -37,7 +37,6 @@ public class Carcass extends Entity {
     public void act(World world) {
         this.location = world.getLocation(this);
         Decay();
-System.out.println(location);
     }
     private void Decay(){
         if (currentHp<= 0){
