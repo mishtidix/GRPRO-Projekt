@@ -69,7 +69,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public boolean readyToSpread() {
         rnd = new Random();
         if (spreadCooldown > 0) {
-            this.spreadCooldown -= rnd.nextInt(5);
+            this.spreadCooldown -= rnd.nextInt(10);
 
             return false;
         }
