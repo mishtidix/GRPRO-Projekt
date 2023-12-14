@@ -82,7 +82,6 @@ ArrayList<Location> list = new ArrayList<>();
     public void beenEaten() {
         if (HP > 0) {
             HP -= 10;
-            System.out.println(HP);
             if (HP <= 0) {
                 super.die();
             }

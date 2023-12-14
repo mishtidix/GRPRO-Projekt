@@ -10,11 +10,11 @@ import java.awt.*;
 public class Fungi extends Entity implements Actor, DynamicDisplayInformationProvider {
     Carcass carcass;
     int infectedCount;
-    Fungi(World world){//constructor
+    public Fungi(World world){//constructor
         super(world);
         infectedCount = 25;
     }
-    Fungi(World world, int infectedCount){//constructor, som bruges når en ny fungi bliver skabt af carcass eller fungi selv
+    public Fungi(World world, int infectedCount){//constructor, som bruges når en ny fungi bliver skabt af carcass eller fungi selv
         super(world);
         this.infectedCount = infectedCount/2;
     }
@@ -36,7 +36,7 @@ public void spread() {
             }
         } else {
             //hvis der ikke var nogen carcass så går infectedCount ned, og hvis den bliver 0 eller der under bliver den slettet
-            infectedCount = infectedCount - 3;
+            infectedCount = infectedCount - 5;
             if (infectedCount <= 0) {
                 world.delete(this);
             }

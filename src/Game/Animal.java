@@ -4,7 +4,7 @@ import itumulator.executable.*;
 import itumulator.simulator.*;
 import java.awt.*;
 import java.util.*;
-public abstract class Animal extends Entity implements Actor,DynamicDisplayInformationProvider, Cloneable {
+public abstract class Animal extends Entity implements Actor,DynamicDisplayInformationProvider {
     public int age;
     public int count;
     public boolean isFull;
@@ -12,6 +12,8 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     public boolean sleeping;
     protected int maxCount;
     protected int MaxHp;
+    protected ArrayList<Class> Predators;
+    protected ArrayList<Class> Prey;
 
 
 
@@ -22,6 +24,8 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         this.isFull = false;
         this.canReproduce = false;
         this.sleeping = false;
+        Predators = new ArrayList<>();
+        Prey=new ArrayList<>();
     }
 
     @Override
@@ -34,29 +38,31 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     }
 
     public void move(World world) {
-
+       if( world.getEntities().containsKey(this)){
         this.location = world.getLocation(this);
         Set<Location> neighbours = world.getEmptySurroundingTiles(location);
         ArrayList<Location> list = new ArrayList<>(neighbours);
         if (!list.isEmpty()) {
             Location l = list.get((int) (Math.random() * list.size()));
-            while (!world.isTileEmpty(l)) {
+            while (!world.isTileEmpty(l) && !safeForPredators(world, l)) {
                 l = list.get((int) (Math.random() * list.size()));
             }
             this.location = l;
 
             world.move(this, l);
-
+        }
         }
     }
     public void moveGoal(Location goal){
-        if (goal != null) {
-            Path path = new Path(goal, this.location);
-            Location best = path.getPath(this.world);
-            this.location = best;
-            world.move(this, best);
-        }else {
-            this.move(world);
+        if (world.getEntities().containsKey(this)) {
+            if (goal != null) {
+                Path path = new Path(goal, this.location);
+                Location best = path.getPath(this.world);
+                this.location = best;
+                world.move(this, best);
+            } else {
+                this.move(world);
+            }
         }
     }
     public void aging(){
@@ -100,17 +106,41 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         if (!sleeping && location != null) {
             Location here = location;
             if (this.age >= MaxHp) {
-                System.out.println("death: "+here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }else if (this.count >= maxCount) {
-                System.out.println("death: "+here);
                 world.remove(this);
                 world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }
         }
+    }
+
+    protected  void kill(World world, Animal prey){
+        world.delete(prey);
+        this.count =0;
+        this.isFull= true;
+    }
+
+    private boolean safeForPredators(World world, Location tile){
+Set<Location> set = world.getSurroundingTiles(tile);
+ArrayList<Location> list = new ArrayList<>(set);
+ArrayList<Location> checkedList = new ArrayList<>();
+for (int i=0 ; i<list.size(); i++){
+    if (!world.isTileEmpty(list.get(i))){
+        checkedList.add(list.get(i));
+    }
+}
+for (int i = 0; i<checkedList.size(); i++){
+    Object object = world.getTile(checkedList.get(i));
+    for (Class o : Predators) {
+        if (object.getClass()==o){
+            return false;
+        }
+    }
+}
+return  true;
     }
 
     public int getAge(){
@@ -127,14 +157,6 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         return  new DisplayInformation(Color.cyan);
     }
 
-    @Override
-    public Animal clone() {
-        try {
-            Animal clone = (Animal) super.clone();
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
+
 }
 

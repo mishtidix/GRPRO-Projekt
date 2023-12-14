@@ -12,16 +12,17 @@ import java.util.Random;
 public class Wolf extends Animal implements Actor, DynamicDisplayInformationProvider {
     private static final int MAX_ENERGY = 50;
     private static final int REPRODUCE_ENERGY_THRESHOLD = 40;
-    Den den;
+    private Den den;
     private int energy;
     private boolean Alpha;
-    private final Location Den;
+    private Wolf packAlpha;
+
 
     public Wolf(World world) {
         super(world);
         this.energy = MAX_ENERGY;
-        this.Alpha = false;
-        this.Den = null;
+        findAlpha();
+        Predators.add(Bear.class);
     }
 
     @Override
@@ -76,6 +77,36 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
             }
         }
     }
+    private void findAlpha(){
+        if (!Alpha){
+            ArrayList<Object> list = new ArrayList<>(world.getEntities().keySet());
+            for (Object object : list){
+                if (object.getClass()!= Wolf.class){
+                    list.remove(object);
+                }
+            }
+            if (list.isEmpty()){
+                this.Alpha=true;
+            } else{
+                for (Object object : list){
+                    Wolf w = (Wolf) object;
+                    if (w.Alpha){
+                        this.packAlpha = w;
+                    }
+                }
+            }
+        }
+    }
+    private void makeDen(World world){
+        if(den == null){
+            if (this.Alpha){
+                this.den = new Den(world);
+                world.setTile(this.getLocation(), den);
+            }else {
+                this.den = packAlpha.den;
+            }
+        }
+    }
 
     @Override
     public Animal createChild() {
@@ -86,9 +117,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         return Alpha;
     }
 
-    public void setAlpha(boolean Alpha) {
-        this.Alpha = Alpha;
-    }
+    public void setAlpha(boolean Alpha) {this.Alpha = Alpha;}
 
     @Override
     public DisplayInformation getInformation() {
