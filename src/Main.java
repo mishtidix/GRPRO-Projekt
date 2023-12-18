@@ -24,6 +24,7 @@ import itumulator.world.World;
 public class Main {
 
     public static void main(String[] args) throws IOException {
+        /*
         int size = 5; // størrelsen af vores 'map' (dette er altid kvadratisk)
         int delay = 300; // forsinkelsen mellem hver skridt af simulationen (i ms)
         int display_size = 800; // skærm opløsningen (i px)
@@ -31,11 +32,17 @@ public class Main {
         Program p = new Program(size, display_size, delay); // opret et nyt program
         World world = p.getWorld(); // hiv verdenen ud, som er der hvor vi skal tilføje ting!
 
-        /*Rabbit rabbit = new Rabbit(world);
+
+        Rabbit rabbit = new Rabbit(world);
         rabbit.randomSpawn(rabbit, world);
 
+        Grass grass = new Grass(world);
+        grass.randomSpawnNonBlocking(grass, world);
+
+
         Burrow burrow = new Burrow(world);
-        burrow.randomSpawn(burrow, world);*/
+        burrow.randomSpawn(burrow, world);
+
 
 
 
@@ -47,7 +54,7 @@ public class Main {
         for (int i = 0; i < 200; i++) {
         p.simulate();
         } // kører 200 runder, altså kaldes 'act' 200 gange for alle placerede aktører
-        /*
+        */
 
         World world = new World(1);
         Program p = new Program(1,100,800);
@@ -117,7 +124,7 @@ public class Main {
                     break;
             }
         }
-        */
+
     }
 }
 

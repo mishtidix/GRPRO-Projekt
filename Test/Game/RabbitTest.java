@@ -36,28 +36,45 @@ class RabbitTest {
         assertNotNull(world.getLocation(rabbit));
         assertNotEquals(initLoc, moved);
     }
-    /*
+
+
     @Test
     public void rabbitDies() {
+        /*
         assertNotNull(world.getLocation(rabbit));
 
-        rabbit.setMaxHP();
-        rabbit.act(world);
+        rabbit.die(world, 50);
 
         assertNull(world.getLocation(rabbit));
+
+         */
     }
 
     @Test
     public void rabbitEatsAndGainsHP() {
+        Grass grass = new Grass(world);
+        grass.randomSpawnNonBlocking(grass, world);
+        int beforeEat = rabbit.getCounter();
+        rabbit.act(world);
+        int afterEat = rabbit.getCounter();
+
+        assertTrue(beforeEat > afterEat);
+
+
+
+
+        /*
         rabbit.setMaxHP();
         Grass grass = new Grass(world);
         grass.randomSpawn(grass, world);
         rabbit.act(world);
         int newHP = rabbit.getHealth();
         assertTrue(newHP > initialHP);
+
+         */
     }
 
-    */
+
 
 
     @Test
@@ -71,9 +88,9 @@ class RabbitTest {
 
     @Test
     public void rabbitCanReproduce() {
-        
-        assertTrue(rabbit.reproduce(););
         /*
+        assertTrue(rabbit.reproduce(););
+
         rabbit.reproduce(world);
         Location rabbitLoc = world.getLocation(rabbit);
         Set<Location> emptySurroundingTiles = world.getEmptySurroundingTiles(rabbitLoc);
@@ -88,6 +105,14 @@ class RabbitTest {
 
     @Test
     public void rabbitCanDigBurrow() {
+        rabbit.setBurrowProbToZero();
+        rabbit.digBurrow();
+
+        Location rabbitLoc = world.getLocation(rabbit);
+
+        assertTrue(world.containsNonBlocking(rabbitLoc));
+
+
 
     }
 
@@ -112,6 +137,7 @@ class RabbitTest {
         world.setNight();
 
         rabbit.act(world);
+        assertTrue(rabbit.isSleeping());
 
 
     }

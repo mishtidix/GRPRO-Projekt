@@ -15,7 +15,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     public Rabbit(World world){
         super(world);
         this.burrowProb = 25;
-        maxCount = 25;
+        maxCount = ;
         MaxHp = 35;
     }
 
@@ -23,7 +23,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     public void act(World world) {
         super.act(world);
         i++;
-        System.out.println(i);
+        System.out.println(maxCount);
         if (world.isDay() && sleeping){
             exitBurrow();
             System.out.println(this.location);
@@ -61,6 +61,10 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         die(world, 50);
     }
 
+    public int getCounter() {
+        return maxCount;
+    }
+
     public int getHealth() {
         return MaxHp;
     }
@@ -82,7 +86,8 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         if (grass == null){
             setGrass();
         }
-count++;
+        count++;
+
         if (grass != null) {
             Location grassLocation = grass.getLocation();
             if (this.location.getX() == grassLocation.getX() && this.location.getY() == grassLocation.getY()) {
@@ -113,7 +118,7 @@ count++;
             this.world.setTile(this.getLocation(),burrow1);
             burrow1.setLocation(this.getLocation());
             burrowProb = 25;
-        } else{
+        }  else {
             rnd = new Random();
             burrowProb = burrowProb - rnd.nextInt(5);
         }
@@ -159,8 +164,12 @@ count++;
 
     }
 
-    public void setMaxHP () {
-        MaxHp = 0;
+    public void setCountoZero () {
+        maxCount = 0;
+    }
+
+    public void setBurrowProbToZero() {
+        burrowProb = 0;
     }
 
 

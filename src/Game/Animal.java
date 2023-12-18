@@ -122,6 +122,10 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
 
    // public int getHealth(int MaxHp) { this.MaxHp = MaxHp; }
 
+    public boolean isSleeping() {
+        return sleeping;
+    }
+
 
     @Override
     public DisplayInformation getInformation(){
@@ -137,5 +141,6 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
             throw new AssertionError();
         }
     }
+
 }
 
