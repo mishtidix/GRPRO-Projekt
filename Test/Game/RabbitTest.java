@@ -64,6 +64,10 @@ class RabbitTest {
         assertTrue(world.isTileEmpty(rabbitLoc));
     }
 
+    /**
+     *
+     */
+
     @Test
     public void rabbitEatsAndGainsHP() {
         Grass grass = new Grass(world);
