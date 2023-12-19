@@ -18,7 +18,8 @@ public class Fungi extends Entity implements Actor, DynamicDisplayInformationPro
         super(world);
         this.infectedCount = infectedCount/2;
     }
-public void spread() {
+
+    public void spread() {
     //hvis fungi er i en carcass så bliver infectedCount ved med at gå op
     if (!(carcass == null)) {
         infectedCount = infectedCount + 2;

@@ -15,7 +15,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     public Rabbit(World world){
         super(world);
         this.burrowProb = 25;
-        maxCount = ;
+        maxCount = 25;
         MaxHp = 35;
     }
 
@@ -164,8 +164,12 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
 
     }
 
-    public void setCountoZero () {
+    public void setCountToZero () {
         maxCount = 0;
+    }
+
+    public void setCountTo25() {
+        count = 25;
     }
 
     public void setBurrowProbToZero() {
