@@ -57,14 +57,14 @@ class GrassTest {
     public void grassGetsEaten() {
         Location initLoc = new Location(1,1);
         world.setTile(initLoc, grass);
-        //assertNotNull(initLoc);
+        assertTrue(world.containsNonBlocking(initLoc));
 
         grass.setHP(0);
         grass.act(world);
 
 
 
-        assertNull(initLoc);
+        assertFalse(world.containsNonBlocking(initLoc));
 
     }
 

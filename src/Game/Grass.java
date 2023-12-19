@@ -17,7 +17,6 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     private static final int SPREAD_PROBABILITY = 25;
     private static final int SPREAD_COOLDOWN = 5;
     private int spreadCooldown;
-    private  int age;
 
     private Random rnd;
 
@@ -29,9 +28,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(world);
-        this.HP = 100;
         this.spreadCooldown = 100;
-        this.age = 0;
     }
 
 
@@ -77,12 +74,9 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     }
 
 
-    public void beenEaten() {
+    public void beenEaten(World world) {
         if (HP > 0) {
             HP -= 10;
-            if (HP <= 0) {
-                super.die(world);
-            }
         }
     }
 
@@ -96,11 +90,12 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
     @Override
     public void act(World world) {
-        this.location=world.getLocation(this);
+        super.act(world);
+        //this.location=world.getLocation(this);
         spread();
         readyToSpread();
         aging();
-        beenEaten();
+        die(world);
     }
 
     @Override
