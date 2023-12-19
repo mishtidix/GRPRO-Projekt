@@ -18,7 +18,6 @@ void SetUpWorld () {
     world = new World(5);
     bear = new Bear(world);
 }
-
     /**
      * Tester bjørn kan placeres et tilfældigt sted (K2-5a)
      */
@@ -54,29 +53,70 @@ void SetUpWorld () {
     bear.act(world);
     Location initLoc = world.getLocation(bear);
 
-    assertFalse(theLoc.equals(bear.getLocation()));
+    assertTrue(initLoc.equals(bear.getLocation()));
 }
 /**
- * Tester om bear kan jæge andre dyre (spis) og spise berrys
+ * Tester om bear kan spise kaniner
  */
 @Test
-    public void BearHunts () {
+    public void BearCanEat () {
+    World world1 = new World(3);
+    Bear bear1 = new Bear(world1);
+    bear1.randomSpawn(bear1, world1);
+    Animal prey = new Rabbit(world1);
+    prey.randomSpawnNonBlocking(prey, world1);
+    assertFalse(bear1.isFull);
+    int beforeEat = bear1.getCounter();
+    bear1.eat(world1);
+    int afterEat = bear1.getCounter();
+
+    assertFalse(beforeEat > afterEat);
+}
+
+/**
+ * Tester om bjørn kan blive ældre med Day and Night cyklus
+ */
+@Test
+    public void bearAges () {
     bear.randomSpawn(bear, world);
     world.setDay();
-    bear.setAge(21);
-    Location bLoc = world.getLocation(bear);
-
-    Animal prey = new Rabbit(world);
-    prey.randomSpawn(prey, world);
+    bear.setAge(10);
+    int initAge = bear.getAge();
 
     bear.act(world);
+    int newAge = bear.getAge();
+    assertTrue(newAge > initAge);
+}
 
-    assertTrue(bear.isFull);
+    /**
+     * Tester om bjørn sover om natten
+     */
+    @Test
+    public void bearSleepDuringNight() {
+    bear.randomSpawn(bear,world);
+    world.setNight();
 
+    bear.bearSleeps(world);
 
+    assertTrue(bear.isSleeping());
+}
+
+/**
+ * Tester om bjørn kan reproducere
+ */
+@Test
+    public void bearReproduces () {
+    bear.randomSpawn(bear, world);
+    world.setDay();
+    bear.setAge(10);
+
+    assertFalse(bear.isSleeping());
+
+    Animal babybear = bear.createChild();
+    assertNotNull(babybear, "Bear should be able to reproduce and create a child");
+    assertTrue(world.getEntities().containsKey(babybear));
 
 
 }
-
 
 }

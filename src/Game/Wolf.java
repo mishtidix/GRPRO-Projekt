@@ -31,6 +31,34 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         this.Den = null;
     }
 
+    private Set<Entity> getEntitiesAsSet(World world) {
+        // Assuming entities is a Map<Object, Location> in your World class
+        Map<Object, Location> entitiesMap = world.getEntities();
+
+        // Extract the values (locations) from the map and return as a Set
+        Set<Entity> entitiesSet = new HashSet<>();
+        for (Location location : entitiesMap.values()) {
+            // Assuming Entity is a class that contains location information
+            Entity entity = new Entity(world) {
+                @Override
+                public DisplayInformation getInformation() {
+                    if (age < 10) {
+                        return new DisplayInformation(Color.GRAY, "wolf-small");
+                    }
+                    return new DisplayInformation(Color.GRAY, "wolf");
+                }
+
+                @Override
+                public void act(World world) {
+                    // Implement the act method for the concrete entity
+                }
+            };
+            entitiesSet.add(entity);
+        }
+        return entitiesSet;
+    }
+
+
     @Override
     public void act(World world) {
         super.act(world);
@@ -40,7 +68,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
             exitDen();
             System.out.println(this.location);
         }
-        if (!(location==null)) {
+        if (!(location == null)) {
             eat(world);
         }
 
@@ -48,33 +76,32 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
             if (!sleeping) {
                 if (den != null) {
                     moveGoal(den.getLocation());
-                }else {
+                } else {
                     move(world);
                 }
             }
-        } else if (!isFull && !sleeping && location!=null) {
-            if (rabbit==null){
+        } else if (!isFull && !sleeping && location != null) {
+            if (rabbit == null) {
                 setLocation(world.getLocation(this));
-                setRabbit();
+                setRabbit(world); // Pass the World parameter here
             }
-            if (rabbit!=null) {
+            if (rabbit != null) {
                 moveGoal(rabbit.getLocation());
-            }else {
+            } else {
                 move(world);
             }
-        }else {
+        } else {
             if (world.isDay()) {
                 move(world);
             }
         }
         die(world, 50);
-
     }
 
     @Override
     public void eat(World world) {
         if (rabbit == null) {
-            setRabbit();
+            setRabbit(world);
         }
         count++;
 
@@ -85,17 +112,17 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
                 this.count = 0;
             }
         }
-        if (count>10) {
+        if (count > 10) {
             isFull = false;
         }
     }
 
-    private void setRabbit() {
+    private void setRabbit(World world) {
         Location preyLocation = findPreyLocation(world);
         if (preyLocation != null) {
-            Set<Entity> entities = (Set<Entity>) world.getEntities();
+            Set<Entity> entities = getEntitiesAsSet(world);
             for (Entity entity : entities) {
-                if (entity instanceof Rabbit) {
+                if (entity.getLocation().equals(preyLocation) && entity instanceof Rabbit) {
                     this.rabbit = (Rabbit) entity; // Assuming rabbit is a field in your Wolf class
                     break; // Assuming there is only 1 rabbit at preyLocation
                 }
@@ -103,16 +130,17 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         }
     }
 
+
     private void hunt(World world) {
         Location preyLocation = findPreyLocation(world);
         if (preyLocation != null) {
-            Set<Entity> entities = (Set<Entity>) world.getEntities();
+            Set<Entity> entities = getEntitiesAsSet(world);
             for (Entity entity : entities) {
-                if (entity instanceof Rabbit) {
-                    energy += 10; // gain 10 energy points
+                if (entity.getLocation().equals(preyLocation) && entity instanceof Rabbit) {
+                    energy += 10;
                     world.delete(entity);
-                    setRabbit(); // Set the rabbit variable after a successful hunt
-                    break; // assuming there is only 1 rabbit at preyLocation
+                    setRabbit(world);
+                    break;
                 }
             }
         }
@@ -156,7 +184,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
     public void exitDen() {
-        if (this.world.isTileEmpty(den.getLocation())) {
+        if (den != null && this.world.isTileEmpty(den.getLocation())) {
             world.setTile(den.getLocation(), this);
             this.sleeping = false;
             this.location = den.getLocation();
@@ -166,17 +194,20 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
                 if (!neighbours.isEmpty()) {
                     ArrayList<Location> list = new ArrayList<>(neighbours);
                     Location l = list.get((int) (Math.random() * list.size()));
-                      while (!world.isTileEmpty(l)) {
+                    while (!world.isTileEmpty(l)) {
+                        l = list.get((int) (Math.random() * list.size()));
                     }
                       this.sleeping = false;
                       world.setTile(l, this);
                       this.location = l;
                 }
             }catch (Exception e){
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
+
         }
-    }
+        }
+
 
     protected void reproduce(World world) {
         Random random = new Random();
