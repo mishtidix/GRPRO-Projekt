@@ -8,13 +8,14 @@ import java.awt.*;
 import itumulator.simulator.*;
 import java.util.*;
 public abstract class Plant extends Entity {
-    public Location location;
+
     public int age;
+    protected int HP;
     public LocalDateTime plantedDateTime;
 
-    public Plant(Location location, World world) {
+    public Plant(World world) {
         super(world);
-        this.location = location;
+        this.HP = 100;
         this.age = 0;
         this.plantedDateTime = LocalDateTime.now();
     }
@@ -24,15 +25,28 @@ public abstract class Plant extends Entity {
     }
 
     public int getAge() {
-
         return age;
     }
 
-    public void die() { //used to delete the plant if it gets eaten?
+    public void aging() {
+        age++;
+    }
+
+    public void die(World world) {//used to delete the plant if it gets eaten?
+        if (this.HP >= 0) {
+            world.remove(this);
             world.delete(this);
         }
+    }
+
+    @Override
+    public void act(World world) {
+        aging();
+
+        die(world);
 
     }
+}
 
 
 

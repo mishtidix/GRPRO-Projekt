@@ -4,14 +4,16 @@ import itumulator.executable.*;
 import itumulator.simulator.*;
 import java.awt.*;
 import java.util.*;
-public class Animal extends Entity implements Actor,DynamicDisplayInformationProvider {
+public abstract class Animal extends Entity implements Actor,DynamicDisplayInformationProvider, Cloneable {
     public int age;
     public int count;
     public boolean isFull;
     public boolean canReproduce;
     public boolean sleeping;
-    public Location current;
-    public World world;
+    protected int maxCount;
+    protected int MaxHp;
+
+
 
     public Animal(World world){
         super(world);
@@ -25,29 +27,37 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
     @Override
     public void act(World world) {
         aging();
-        reproduce(world);
-        eat(world);
-        move(world);
-        die(world);
-        System.out.println(age);
+        if (!sleeping) {
+            reproduce(world);
+        }
+
     }
 
-    public void move(World world){
-        Set<Location> neighbours = world.getEmptySurroundingTiles();
+    public void move(World world) {
+
+        this.location = world.getLocation(this);
+        Set<Location> neighbours = world.getEmptySurroundingTiles(location);
         ArrayList<Location> list = new ArrayList<>(neighbours);
-        try{
-            Location l = list.get((int)(Math.random() * list.size())); // Linje 2 og 3 kan erstattes af neighbours.toArray()[0]
-            this.current = l;
-            world.move(this,l);
-        }catch(Exception e){
+        if (!list.isEmpty()) {
+            Location l = list.get((int) (Math.random() * list.size()));
+            while (!world.isTileEmpty(l)) {
+                l = list.get((int) (Math.random() * list.size()));
+            }
+            this.location = l;
+
+            world.move(this, l);
 
         }
     }
     public void moveGoal(Location goal){
-        Path path = new Path(goal, this.current);
-        Location best= path.getPath(world);
-        this.current = best;
-        world.move(this,best);
+        if (goal != null) {
+            Path path = new Path(goal, this.location);
+            Location best = path.getPath(this.world);
+            this.location = best;
+            world.move(this, best);
+        }else {
+            this.move(world);
+        }
     }
     public void aging(){
         age++;
@@ -57,46 +67,48 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
 
     }
 
-    void reproduce(World world){
-        Random r = new Random();
 
-        if(this.canReproduce){
-            int x = r.nextInt(5);
-            int y = r.nextInt(5);
-            Location l = new Location(x,y);
 
-            while(!world.isTileEmpty(l)) {
-                x = r.nextInt(5);
-                y = r.nextInt(5);
-                l = new Location(x,y);
+    protected abstract void eat(World world);
+
+    protected void reproduce(World world) {
+        if (!sleeping) {
+            if (this.canReproduce) {
+                world.setCurrentLocation(this.getLocation());
+                Set<Location> neighbours = world.getEmptySurroundingTiles();
+                ArrayList<Location> list = new ArrayList<>(neighbours);
+                if (!list.isEmpty()) {
+                    Location l = list.get((int) (Math.random() * list.size()));
+
+
+                    while (!world.isTileEmpty(l)) {
+                        l = list.get((int) (Math.random() * list.size()));
+                    }
+                Animal child = createChild();
+                world.setTile(l,child);
+
+
+                    this.canReproduce = false;
+                }
             }
-
-            world.setTile(l, new Animal(this.world));
-            this.canReproduce = false;
         }
     }
+    public abstract Animal createChild();
 
-    void eat(World world){
-        try{
-            if(world.containsNonBlocking(this.current)){
-                isFull = true;
-                this.count = 0;
-                System.out.println("isfull");
-            } else{
-                count++;
-                System.out.println("count:" + count);
+    void die(World world, int Carcasshp) {
+        if (!sleeping && location != null) {
+            Location here = location;
+            if (this.age >= MaxHp) {
+                System.out.println(here);
+                world.remove(this);
+                //world.setTile(here, new Carcass(world, Carcasshp));
+                world.delete(this);
+            }else if (this.count >= maxCount) {
+                System.out.println(here);
+                world.remove(this);
+                //world.setTile(here, new Carcass(world, Carcasshp));
+                world.delete(this);
             }
-        }catch (Exception e){
-
-        }
-    }
-
-    void die(World world){
-        if(this.age >= 25){
-            world.delete(this);
-        }
-        if(this.count== 20){
-            world.delete(this);
         }
     }
 
@@ -104,9 +116,30 @@ public class Animal extends Entity implements Actor,DynamicDisplayInformationPro
         return this.age;
     }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+   // public int getHealth(int MaxHp) { this.MaxHp = MaxHp; }
+
+    public boolean isSleeping() {
+        return sleeping;
+    }
+
+
     @Override
     public DisplayInformation getInformation(){
         return  new DisplayInformation(Color.cyan);
+    }
+
+    @Override
+    public Animal clone() {
+        try {
+            Animal clone = (Animal) super.clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
 }

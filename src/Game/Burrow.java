@@ -11,6 +11,7 @@ public class Burrow extends Entity implements NonBlocking, Actor, DynamicDisplay
     public Burrow(World world) {
 
         super(world);
+
     }
 
     public Location getLocation(Location location) {

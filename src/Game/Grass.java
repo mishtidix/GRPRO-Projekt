@@ -4,64 +4,97 @@ import itumulator.executable.*;
 import java.awt.*;
 
 import itumulator.simulator.*;
+
+import java.lang.reflect.*;
 import java.util.*;
 import itumulator.world.Location.*;
 
 import static itumulator.world.World.getTotalDayDuration;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.when;
 
 public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayInformationProvider {
     private static final int SPREAD_PROBABILITY = 25;
     private static final int SPREAD_COOLDOWN = 5;
     private int spreadCooldown;
-    private int HP;
+
+    private Random rnd;
 
     /**
      * Creates grass at a random location
      * HP: for hvor mange gange græsset skal spises før den forsvinder
      * spreadCooldown: field to track the cooldown before the grass can spread again
      */
-    public Grass(Location location, World world) {
+    public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
-        super(location, world);
-        this.HP = 100;
-        this.spreadCooldown = 0;
+        super(world);
+        this.spreadCooldown = 100;
     }
 
 
     public void spread() {
         Random r = new Random();
-        if (spreadCooldown > 0) {
+        if (readyToSpread()) {
             Set<Location> neighbours = world.getSurroundingTiles();
             ArrayList<Location> list = new ArrayList<>(neighbours);
 
-            Location l = list.get((int)(Math.random() * list.size()));
+            try {
+                for (int i = 0; i < list.size(); i++) {
+                    if (!world.isTileEmpty(list.get(i)) && world.containsNonBlocking(list.get(i))) {
+                        list.remove(list.get(i));
+                    }
 
-            while(!world.isTileEmpty(l)) {
-                l = list.get((int)(Math.random() * list.size()));
+                    if (!list.isEmpty()) {
+                        Location l = list.get((int) (Math.random() * list.size()));
+                        world.setTile(l, new Grass(world));
+
+                    }
+
+                }
+                this.spreadCooldown += 100;
+
+            } catch (Exception e){
+
+                }
+
             }
-
-            world.setTile(l, new Grass(l, world));
-        }
 
     }
 
 
 
-    public void beenEaten() {
+    public boolean readyToSpread() {
+        rnd = new Random();
+        if (spreadCooldown > 0) {
+            this.spreadCooldown -= rnd.nextInt(10);
+
+            return false;
+        }
+        return  true;
+    }
+
+
+    public void beenEaten(World world) {
         if (HP > 0) {
             HP -= 10;
-            if (HP <= 0) {
-                super.die();
-            }
         }
+    }
+
+    public void setSpreadCooldown() {
+        spreadCooldown = 0;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 
     @Override
     public void act(World world) {
-
+        super.act(world);
+        spread();
+        readyToSpread();
+        aging();
     }
-      
 
     @Override
     public DisplayInformation getInformation(){
