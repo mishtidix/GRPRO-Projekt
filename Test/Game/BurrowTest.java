@@ -16,6 +16,9 @@ class BurrowTest {
         burrow = new Burrow(world);
     }
 
+    /**
+     * Tester om kaninhuller kan placeres et tilfældigt sted (K1-3a.)
+     */
     @Test
     public void burrowSpawns() {
         burrow.randomSpawnNonBlocking(burrow, world);
@@ -23,6 +26,10 @@ class BurrowTest {
         Location initLoc = world.getLocation(burrow);
         assertNotNull(initLoc);
     }
+
+    /**
+     * Tester om dyr kan står på kaninhuler uden der sker noget (K1-3b.)
+     */
 
     @Test
     public void burrowIsNonBlocking()  {

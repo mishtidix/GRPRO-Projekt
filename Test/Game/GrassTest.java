@@ -16,17 +16,24 @@ class GrassTest {
         world = new World(5);
 
         grass = new Grass(world);
-        grass.randomSpawnNonBlocking(grass, world);
     }
 
+    /**
+     * Tester om grasset kan placeres et tilfældigt sted (K1-1a.)
+     */
     @Test
     public void grassSpawns() {
+        grass.randomSpawnNonBlocking(grass, world);
         Location initLoc = world.getLocation(grass);
         assertNotNull(initLoc);
     }
 
+    /**
+     * Tester om grasset kan sprede sig (K1-1c.)
+     */
     @Test
     public void grassSpreading() {
+        grass.randomSpawnNonBlocking(grass, world);
         Location initLoc = world.getLocation(grass);
 
         grass.setSpreadCooldown();
@@ -48,21 +55,35 @@ class GrassTest {
 
     @Test
     public void grassGetsEaten() {
-        Location initLoc = world.getLocation(grass);
+        Location initLoc = new Location(1,1);
+        world.setTile(initLoc, grass);
+        //assertNotNull(initLoc);
 
-        grass.setHP();
-        grass.beenEaten();
-
-        Location gotEaten = world.getLocation(grass);
-
-        assertNotNull(initLoc);
-        assertNull(gotEaten);
+        grass.setHP(0);
+        grass.act(world);
 
 
+
+        assertNull(initLoc);
 
     }
 
-    @AfterEach
-    void tearDown() {
+    /**
+     * Tester om dyr kan står på grasset uden der sker noget (K1-1d.)
+     */
+    @Test
+    public void grassIsNonBlocking()  {
+
+        Location sameLoc = new Location(1, 1);
+        Rabbit rabbit = new Rabbit(world);
+
+        world.setTile(sameLoc, rabbit);
+        world.setTile(sameLoc, grass);
+
+        Location rabbitLoc = world.getLocation(rabbit);
+        Location burrowLoc = world.getLocation(grass);
+
+        assertEquals(rabbitLoc, burrowLoc);
+
     }
 }

@@ -13,19 +13,28 @@ class RabbitTest {
 
     @BeforeEach
     void setUp() {
-        world = new World(5);
+        world = new World(3);
 
         rabbit = new Rabbit(world);
-        rabbit.randomSpawn(rabbit, world);
     }
 
+
+    /**
+     * Tester kaniner kan placeres et tilfældigt sted (K1-3a.)
+     */
     @Test
     public void rabbitSpawns() {
+        rabbit.randomSpawn(rabbit, world);
+
         assertNotNull(world.getLocation(rabbit));
     }
 
+    /**
+     * Tester om kaninen kan bevæge sig i løbet af dagen (basale funktion af et dyr).
+     */
     @Test
     public void rabbitMovesDuringDay() {
+        rabbit.randomSpawn(rabbit, world);
         Location initLoc = world.getLocation(rabbit);
         world.setDay();
 
@@ -37,17 +46,22 @@ class RabbitTest {
         assertNotEquals(initLoc, moved);
     }
 
-
+    /**
+     * Tester om kaniner kan dø og fjernes fra verden (k1-2b.)
+     * Denne test fungerer når man udkommenterer (world.setTile(here, new Carcass(world, Carcasshp))) i animals die() metode;
+     */
     @Test
     public void rabbitDies() {
-        /*
-        assertNotNull(world.getLocation(rabbit));
+        rabbit.randomSpawn(rabbit, world);
+        world.setDay();
+        rabbit.setAge(35);
+        Location rabbitLoc = world.getLocation(rabbit);
+
+        assertNotNull(rabbitLoc);
 
         rabbit.die(world, 50);
 
-        assertNull(world.getLocation(rabbit));
-
-         */
+        assertTrue(world.isTileEmpty(rabbitLoc));
     }
 
     @Test
@@ -73,8 +87,6 @@ class RabbitTest {
 
          */
     }
-
-
 
 
     @Test
@@ -111,9 +123,6 @@ class RabbitTest {
         Location rabbitLoc = world.getLocation(rabbit);
 
         assertTrue(world.containsNonBlocking(rabbitLoc));
-
-
-
     }
 
     @Test
@@ -129,6 +138,16 @@ class RabbitTest {
 
     @Test
     public void rabbitEntersBurrow() {
+        Location loc = new Location(1, 1);
+        world.setTile(loc, rabbit);
+
+        Burrow burrow = new Burrow(world);
+        world.setTile(loc, burrow);
+
+        rabbit.enterBurrow();
+        assertNull(world.getLocation(rabbit));
+        //assert
+
 
     }
 

@@ -81,7 +81,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
         if (HP > 0) {
             HP -= 10;
             if (HP <= 0) {
-                super.die();
+                super.die(world);
             }
         }
     }
@@ -90,8 +90,8 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
         spreadCooldown = 0;
     }
 
-    public void setHP() {
-        HP = 0;
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 
     @Override

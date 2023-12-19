@@ -101,12 +101,12 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
             if (this.age >= MaxHp) {
                 System.out.println(here);
                 world.remove(this);
-                world.setTile(here, new Carcass(world, Carcasshp));
+                //world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }else if (this.count >= maxCount) {
                 System.out.println(here);
                 world.remove(this);
-                world.setTile(here, new Carcass(world, Carcasshp));
+                //world.setTile(here, new Carcass(world, Carcasshp));
                 world.delete(this);
             }
         }

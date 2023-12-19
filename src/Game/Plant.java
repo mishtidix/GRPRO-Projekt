@@ -32,7 +32,8 @@ public abstract class Plant extends Entity {
         age++;
     }
 
-    public void die() { //used to delete the plant if it gets eaten?
+    public void die(World world) { //used to delete the plant if it gets eaten?
+            world.remove(this);
             world.delete(this);
         }
 

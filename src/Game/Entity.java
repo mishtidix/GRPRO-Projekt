@@ -10,9 +10,10 @@ public abstract class Entity implements Actor, DynamicDisplayInformationProvider
     protected World world;
     protected Location location;
     protected Random rnd;
+    protected boolean isAlive;
 
     public Entity(World world) {
-        this.world = world;
+        this.world = world; this.isAlive = true;
     }
 
     public void randomSpawn(Object object, World world) {
