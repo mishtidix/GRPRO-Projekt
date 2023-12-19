@@ -118,16 +118,18 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
     private void setRabbit(World world) {
-        Location preyLocation = findPreyLocation(world);
-        if (preyLocation != null) {
-            Set<Entity> entities = getEntitiesAsSet(world);
-            for (Entity entity : entities) {
-                if (entity.getLocation().equals(preyLocation) && entity instanceof Rabbit) {
-                    this.rabbit = (Rabbit) entity; // Assuming rabbit is a field in your Wolf class
-                    break; // Assuming there is only 1 rabbit at preyLocation
-                }
-            }
-        }
+//        Location preyLocation = findPreyLocation(world);
+//        if (preyLocation != null) {
+//            Set<Entity> entities = getEntitiesAsSet(world);
+//            for (Entity entity : entities) {
+//                if (entity.getLocation().equals(preyLocation) && entity instanceof Rabbit) {
+//                    this.rabbit = (Rabbit) entity; // Assuming rabbit is a field in your Wolf class
+//                    break; // Assuming there is only 1 rabbit at preyLocation
+//                }
+//            }
+//        }
+        Target findRabbit = new Target(world, location, this);
+        this.rabbit = (Rabbit)findRabbit.getBestTarget(Rabbit.class);
     }
 
 
@@ -165,8 +167,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
 
     public void setDen() {
         Target findDen = new Target(this.world, this.location, this);
-        //this.den = (Den)
-        findDen.getBestTarget(den.getClass());
+        this.den = (Den)findDen.getBestTarget(den.getClass());
     }
 
     public void enterDen(){
