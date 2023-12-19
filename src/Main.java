@@ -35,7 +35,7 @@ public class Main {
 
         Rabbit rabbit = new Rabbit(world);
         rabbit.randomSpawn(rabbit, world);
-        rabbit.setCountTo25();
+
 
         /*
         Grass grass = new Grass(world);

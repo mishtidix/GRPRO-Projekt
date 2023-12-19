@@ -56,7 +56,6 @@ class GrassTest {
     /**
      * Tester om grasset kan nedbrydes og forsvinde (K1-1b.)
      */
-
     @Test
     public void grassGetsEaten() {
         Location initLoc = new Location(1,1);
@@ -66,10 +65,7 @@ class GrassTest {
         grass.setHP(0);
         grass.act(world);
 
-
-
         assertFalse(world.containsNonBlocking(initLoc));
-
     }
 
     /**

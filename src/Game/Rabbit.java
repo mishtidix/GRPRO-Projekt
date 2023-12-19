@@ -22,6 +22,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     @Override
     public void act(World world) {
         super.act(world);
+        MaxHp--;
         i++;
         System.out.println(maxCount);
         if (world.isDay() && sleeping){
@@ -61,9 +62,14 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         die(world, 50);
     }
 
-    public int getCounter() {
+    public int getMaxCounter() {
         return maxCount;
     }
+
+    public int getCounter() {
+        return count;
+    }
+
 
     public int getHealth() {
         return MaxHp;
@@ -164,16 +170,16 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
 
     }
 
-    public void setCountToZero () {
+    public void setCount (int count) {
         maxCount = 0;
     }
 
-    public void setCountTo25() {
-        count = 25;
+    public void setCountTo25(int count) {
+        this.count = count;
     }
 
-    public void setBurrowProbToZero() {
-        burrowProb = 0;
+    public void setBurrowProb(int burrowProb) {
+        this.burrowProb =  burrowProb;
     }
 
 
