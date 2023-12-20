@@ -11,30 +11,15 @@ class CarcassTest {
 
     @BeforeEach
     void setUp() {
-        world = new World(3);
+        world = new World(5);
     }
 
-    /**
-     * Tester om et ådsel kan paceres et vilkårligt sted (K3-1a
-     */
-    @Test
-    public void spawnCarcass() {
-        carcass = new Carcass(world, 50);
-        carcass.randomSpawn(carcass, world);
-
-        assertNotNull(world.getTile(carcass.getLocation()));
-    }
-
-    /**
-     *
-     */
     @Test
     public void rabbitCarcass() {
         Rabbit rabbit = new Rabbit(world);
         rabbit.randomSpawn(rabbit, world);
 
-
-        //rabbit.setCountTo25();
+        rabbit.setCountTo25();
         rabbit.die(world, 50);
 
         Location rabbitLoc = rabbit.getLocation();

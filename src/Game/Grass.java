@@ -17,7 +17,6 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     private static final int SPREAD_PROBABILITY = 25;
     private static final int SPREAD_COOLDOWN = 5;
     private int spreadCooldown;
-    private  int age;
 
     private Random rnd;
 
@@ -29,9 +28,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(world);
-        this.HP = 50;
-        this.spreadCooldown = 150;
-        this.age = 0;
+        this.spreadCooldown = 100;
     }
 
 
@@ -39,39 +36,37 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
         Random r = new Random();
         if (readyToSpread()) {
             Set<Location> neighbours = world.getSurroundingTiles();
-            ArrayList<Location> checklist = new ArrayList<>(neighbours);
-ArrayList<Location> list = new ArrayList<>();
+            ArrayList<Location> list = new ArrayList<>(neighbours);
 
-                for (int i = 0; i < checklist.size(); i++) {
-                    if (!world.containsNonBlocking(checklist.get(i))) {
-                        list.add(checklist.get(i));
+            try {
+                for (int i = 0; i < list.size(); i++) {
+                    if (!world.isTileEmpty(list.get(i)) && world.containsNonBlocking(list.get(i))) {
+                        list.remove(list.get(i));
                     }
-                }
+
                     if (!list.isEmpty()) {
                         Location l = list.get((int) (Math.random() * list.size()));
-                        while (world.containsNonBlocking(l)){
-                            l = list.get((int) (Math.random() * list.size()));
-
-                        }
                         world.setTile(l, new Grass(world));
-                        this.spreadCooldown += 200;
 
                     }
 
                 }
+                this.spreadCooldown += 100;
 
+            } catch (Exception e){
 
+                }
 
             }
 
-
+    }
 
 
 
     public boolean readyToSpread() {
         rnd = new Random();
         if (spreadCooldown > 0) {
-            this.spreadCooldown -= rnd.nextInt(5);
+            this.spreadCooldown -= rnd.nextInt(10);
 
             return false;
         }
@@ -79,23 +74,28 @@ ArrayList<Location> list = new ArrayList<>();
     }
 
 
-    public void beenEaten() {
+    public void beenEaten(World world) {
         if (HP > 0) {
             HP -= 10;
-            if (HP <= 0) {
-                super.die();
-            }
         }
+    }
+
+    public void setSpreadCooldown() {
+        spreadCooldown = 0;
+    }
+
+    public void setHP(int HP) {
+        this.HP = HP;
     }
 
     @Override
     public void act(World world) {
-        if (this.location==null) {
-            this.location = world.getLocation(this);
-        }
+        super.act(world);
+        //this.location=world.getLocation(this);
         spread();
         readyToSpread();
         aging();
+        die(world);
     }
 
     @Override

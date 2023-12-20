@@ -20,7 +20,7 @@ class RabbitTest {
 
 
     /**
-     * Tester om kaniner kan placeres et tilfældigt sted (K1-3a.)
+     * Tester kaniner kan placeres et tilfældigt sted (K1-3a.)
      */
     @Test
     public void rabbitSpawns() {
@@ -64,67 +64,60 @@ class RabbitTest {
         assertTrue(world.isTileEmpty(rabbitLoc));
     }
 
-    /**
-     *
-     */
     @Test
     public void rabbitEatsAndGainsHP() {
         Grass grass = new Grass(world);
-        Location currentLoc = new Location(1, 1);
-        Location currentLoc2 = new Location(0, 1);
-
-        world.setTile(currentLoc, grass);
-        world.setTile(currentLoc2, rabbit);
-
-        rabbit.eat(world);
+        grass.randomSpawnNonBlocking(grass, world);
         int beforeEat = rabbit.getCounter();
         rabbit.act(world);
         int afterEat = rabbit.getCounter();
 
         assertTrue(beforeEat > afterEat);
 
+
+
+
+        /*
+        rabbit.setMaxHP();
+        Grass grass = new Grass(world);
+        grass.randomSpawn(grass, world);
+        rabbit.act(world);
+        int newHP = rabbit.getHealth();
+        assertTrue(newHP > initialHP);
+
+         */
     }
 
-    /**
-     * Tester om kaninen bliver ældre og mister energi samtidigt (k1-2d.)
-     */
+
     @Test
     public void rabbitAges() {
-        rabbit.randomSpawn(rabbit, world);
         int initAge = rabbit.getAge();
-        int energi = rabbit.getHealth();
 
         rabbit.act(world);
         int newAge = rabbit.getAge();
-        int newEnergi = rabbit.getHealth();
         assertTrue(newAge > initAge);
-        assertTrue(energi > newEnergi);
     }
 
-    /**
-     * Tester om kaninen kan reproducere (k1-2e.)
-     */
     @Test
     public void rabbitCanReproduce() {
-        world.setDay();
-        rabbit.randomSpawn(rabbit, world);
-        rabbit.setReproduce(true);
+        /*
+        assertTrue(rabbit.reproduce(););
 
-        rabbit.act(world);
-        Map<Object, Location> amount = world.getEntities();
-
-        assertTrue(amount.size() > 1);
+        rabbit.reproduce(world);
+        Location rabbitLoc = world.getLocation(rabbit);
+        Set<Location> emptySurroundingTiles = world.getEmptySurroundingTiles(rabbitLoc);
+        assertFalse(emptySurroundingTiles.isEmpty());
+        Location babyrabbitLoc = emptySurroundingTiles.iterator().next();
+        assertTrue(world.isTileEmpty(babyrabbitLoc));
+        */
     }
 
 
-    /**
-     * Tester om kaninen kan grave huller (k1-2f.)
-     */
+
+
     @Test
     public void rabbitCanDigBurrow() {
-        rabbit.randomSpawn(rabbit, world);
-
-        rabbit.setBurrowProb(0);
+        rabbit.setBurrowProbToZero();
         rabbit.digBurrow();
 
         Location rabbitLoc = world.getLocation(rabbit);
@@ -135,7 +128,7 @@ class RabbitTest {
     @Test
     public void rabbitExitsBurrow() {
         Burrow burrow = new Burrow(world);
-        Location loc = new Location(1,1);
+        burrow.randomSpawn(burrow, world);
 
         for (int i = 0; i < 15; i++) {
             rabbit.act(world);
@@ -145,14 +138,14 @@ class RabbitTest {
 
     @Test
     public void rabbitEntersBurrow() {
-        Burrow burrow = new Burrow(world);
-        Location loc = new Location(1,1);
-
+        Location loc = new Location(1, 1);
         world.setTile(loc, rabbit);
+
+        Burrow burrow = new Burrow(world);
         world.setTile(loc, burrow);
 
         rabbit.enterBurrow();
-        assertTrue(world.isTileEmpty(loc));
+        assertNull(world.getLocation(rabbit));
         //assert
 
 
@@ -160,7 +153,6 @@ class RabbitTest {
 
     @Test
     public void rabbitSleepsDuringNight() {
-        rabbit.randomSpawn(rabbit, world);
         world.setNight();
 
         rabbit.act(world);

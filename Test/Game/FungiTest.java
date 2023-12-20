@@ -9,6 +9,4 @@ class FungiTest {
     @BeforeEach
     void setUp() {
     }
-
-
 }
