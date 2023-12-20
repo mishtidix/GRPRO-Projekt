@@ -111,6 +111,10 @@ public class inputReader {
                 case "fungi":
                     Fungi fungi = new Fungi(world);
                     fungi.randomSpawn(fungi,world);
+                    break;
+                case "fox":
+                    Fox fox = new Fox(world);
+                    fox.randomSpawn(fox,world);
             }
         }
 

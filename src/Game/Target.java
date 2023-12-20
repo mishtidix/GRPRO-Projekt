@@ -37,7 +37,8 @@ public class Target {
             if(targets.size() > 0) bestTarget = targets.get(0);
             for (int i = 0; i < targets.size(); i++) {
                 Entity o = targets.get(i);
-                if (o.getLocation()== null && world.getEntities().containsKey(o)){o.setLocation(world.getLocation(o));}
+                if (o.getLocation()== null && world.getEntities().get(o)!=null){o.setLocation(world.getLocation(o));}
+                if (o.getLocation()!=null && bestTarget.getLocation()!=null){
                 Location check = o.getLocation();
                 Location best = bestTarget.getLocation();
                 int bX;
@@ -45,34 +46,34 @@ public class Target {
                 int cX;
                 int cY;
 
-                if (check.getX() < currentX) {
-                    cX = currentX - check.getX();
-                } else {
-                    cX = check.getX() - currentX;
-                }
-                if (check.getY() < currentY) {
-                    cY = currentY - check.getY();
-                } else {
-                    cY = check.getY() - currentY;
-                }
-                if (best.getX() < currentX) {
-                    bX = currentX - best.getX();
-                } else {
-                    bX = best.getX() - currentX;
-                }
-                if (best.getY() < currentY) {
-                    bY = currentY - best.getY();
-                } else {
-                    bY = best.getY() - currentY;
-                }
+    if (check.getX() < currentX) {
+        cX = currentX - check.getX();
+    } else {
+        cX = check.getX() - currentX;
+    }
+    if (check.getY() < currentY) {
+        cY = currentY - check.getY();
+    } else {
+        cY = check.getY() - currentY;
+    }
+    if (best.getX() < currentX) {
+        bX = currentX - best.getX();
+    } else {
+        bX = best.getX() - currentX;
+    }
+    if (best.getY() < currentY) {
+        bY = currentY - best.getY();
+    } else {
+        bY = best.getY() - currentY;
+    }
 
-                if (cX < bX && cY < bY && cX >= 0 && cY >= 0) {
-                    bestTarget = o;
-                } else if (cX < bX && cY <= bY && cX >= 0 || cY < bY && cX <= bX && cY >= 0) {
-                    bestTarget = o;
+    if (cX < bX && cY < bY && cX >= 0 && cY >= 0) {
+        bestTarget = o;
+    } else if (cX < bX && cY <= bY && cX >= 0 || cY < bY && cX <= bX && cY >= 0) {
+        bestTarget = o;
 
-                }
-
+    }
+}
             }
             return bestTarget;
     }

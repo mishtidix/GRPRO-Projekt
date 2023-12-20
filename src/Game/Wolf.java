@@ -95,7 +95,7 @@ this.denProb = 25;
                 move(world);
             }
         } else {
-            if (world.isDay()) {
+            if (world.isDay() && location!=null) {
                 move(world);
             }
         }
