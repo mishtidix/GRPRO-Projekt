@@ -87,7 +87,7 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             Location grassLocation = grass.getLocation();
             if (this.location.getX() == grassLocation.getX() && this.location.getY() == grassLocation.getY()) {
                 isFull = true;
-                this.grass.beenEaten();
+                this.grass.beenEaten(world);
                 this.count = 0;
             }
         }
@@ -154,7 +154,24 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         }
 
     }
+    public void setCountToZero () {
+        maxCount = 0;
+    }
 
+    public void setCountTo25() {
+        count = 25;
+    }
+
+    public void setBurrowProbToZero() {
+        burrowProb = 0;
+    }
+    public int getCounter() {
+        return maxCount;
+    }
+
+    public int getHealth() {
+        return MaxHp;
+    }
 }
 
 

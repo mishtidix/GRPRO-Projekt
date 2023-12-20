@@ -29,6 +29,9 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         this.energy = MAX_ENERGY;
         this.Alpha = false;
         this.Den = null;
+        this.maxCount=20;
+        this.MaxHp = 45;
+        System.out.println("test");
     }
 
     private Set<Entity> getEntitiesAsSet(World world) {
@@ -62,7 +65,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     @Override
     public void act(World world) {
         super.act(world);
-        i++;
+
         System.out.println(maxCount);
         if (world.isDay() && sleeping) {
             exitDen();
@@ -95,7 +98,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
                 move(world);
             }
         }
-        die(world, 50);
+        die(world, 70);
     }
 
     @Override
@@ -107,9 +110,11 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
 
         if (rabbit != null) {
             Location preyLocation = rabbit.getLocation();
+            if (preyLocation!=null){
             if (this.location.getX() == preyLocation.getX() && this.location.getY() == preyLocation.getY()) {
                 isFull = true;
                 this.count = 0;
+            }
             }
         }
         if (count > 10) {
@@ -118,16 +123,6 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
     private void setRabbit(World world) {
-//        Location preyLocation = findPreyLocation(world);
-//        if (preyLocation != null) {
-//            Set<Entity> entities = getEntitiesAsSet(world);
-//            for (Entity entity : entities) {
-//                if (entity.getLocation().equals(preyLocation) && entity instanceof Rabbit) {
-//                    this.rabbit = (Rabbit) entity; // Assuming rabbit is a field in your Wolf class
-//                    break; // Assuming there is only 1 rabbit at preyLocation
-//                }
-//            }
-//        }
         Target findRabbit = new Target(world, location, this);
         this.rabbit = (Rabbit)findRabbit.getBestTarget(Rabbit.class);
     }

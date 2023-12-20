@@ -24,6 +24,8 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
 if (territory== null){
     territory = world.getLocation(this);
 }
+move(world);
+eat();
     }
 
     @Override
@@ -31,9 +33,11 @@ if (territory== null){
         Path path = new Path(territory, location);
         Set<Location> neighbours = path.getPathAround(world);
         ArrayList<Location> list = new ArrayList<>(neighbours);
-        Location l = list.get((int)(Math.random() * list.size()));
-        this.location = l;
-        world.move(this,l);
+        if (!list.isEmpty()) {
+            Location l = list.get((int) (Math.random() * list.size()));
+            this.location = l;
+            world.move(this, l);
+        }
     }
 
     @Override
@@ -72,7 +76,7 @@ if (territory== null){
 
 private boolean sleeping;
 
-    @Override
+
     public boolean isSleeping (){
         return sleeping;
 }
@@ -91,6 +95,6 @@ public void bearSleeps (World world) {
         if(age < 15){
             return new DisplayInformation(Color.GRAY, "bear-small");
         }
-        return new DisplayInformation(Color.GRAY, "bear-large");
+        return new DisplayInformation(Color.GRAY, "bear");
     }
 }

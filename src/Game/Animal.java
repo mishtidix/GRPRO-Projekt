@@ -143,6 +143,12 @@ for (int i = 0; i<checkedList.size(); i++){
 return  true;
     }
 
+
+
+    public boolean isSleeping() {
+        return sleeping;
+    }
+
     public int getAge(){
         return this.age;
     }

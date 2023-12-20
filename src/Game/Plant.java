@@ -33,9 +33,11 @@ public abstract class Plant extends Entity {
     }
 
     public void die(World world) {//used to delete the plant if it gets eaten?
-        if (this.HP >= 0) {
-            world.remove(this);
+        if (this.HP <= 0) {
+            if (world.getEntities().containsKey(this)){
+//            world.remove(this);
             world.delete(this);
+            }
         }
     }
 
