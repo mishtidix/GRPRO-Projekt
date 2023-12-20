@@ -28,7 +28,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(world);
-        this.spreadCooldown = 100;
+        this.spreadCooldown = 150;
     }
 
 
@@ -51,7 +51,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
                     }
 
                 }
-                this.spreadCooldown += 100;
+                this.spreadCooldown += 250;
 
             } catch (Exception e){
 
@@ -66,7 +66,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public boolean readyToSpread() {
         rnd = new Random();
         if (spreadCooldown > 0) {
-            this.spreadCooldown -= rnd.nextInt(10);
+            this.spreadCooldown -= rnd.nextInt(5);
 
             return false;
         }

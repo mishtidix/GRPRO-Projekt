@@ -37,7 +37,7 @@ public class Target {
             if(targets.size() > 0) bestTarget = targets.get(0);
             for (int i = 0; i < targets.size(); i++) {
                 Entity o = targets.get(i);
-                if (o.getLocation()== null){o.setLocation(world.getLocation(o));}
+                if (o.getLocation()== null && world.getEntities().containsKey(o)){o.setLocation(world.getLocation(o));}
                 Location check = o.getLocation();
                 Location best = bestTarget.getLocation();
                 int bX;

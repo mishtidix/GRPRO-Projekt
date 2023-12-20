@@ -56,7 +56,7 @@ public class Path {
                     }
                 }
             }
-if (best==current){System.out.println("fail");}
+
         return best;
     }
 

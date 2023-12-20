@@ -26,6 +26,7 @@ if (territory== null){
 }
 move(world);
 eat();
+        die(world, 100);
     }
 
     @Override

@@ -31,7 +31,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         this.Den = null;
         this.maxCount=20;
         this.MaxHp = 45;
-        System.out.println("test");
+this.denProb = 25;
     }
 
     private Set<Entity> getEntitiesAsSet(World world) {
@@ -66,20 +66,21 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     public void act(World world) {
         super.act(world);
 
-        System.out.println(maxCount);
         if (world.isDay() && sleeping) {
             exitDen();
-            System.out.println(this.location);
         }
         if (!(location == null)) {
             eat(world);
         }
 
         if (world.isNight() && !sleeping) {
+            enterDen();
             if (!sleeping) {
+
                 if (den != null) {
                     moveGoal(den.getLocation());
                 } else {
+                    setDen();
                     move(world);
                 }
             }
@@ -161,8 +162,12 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     }
 
     public void setDen() {
+        makeDen();
+        this.location=world.getLocation(this);
         Target findDen = new Target(this.world, this.location, this);
-        this.den = (Den)findDen.getBestTarget(den.getClass());
+        if (findDen.getBestTarget(Game.Den.class)!=null) {
+            this.den = (Den) findDen.getBestTarget(Game.Den.class);
+        }
     }
 
     public void enterDen(){
@@ -186,7 +191,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
             this.location = den.getLocation();
         }else if(!this.world.isTileEmpty(den.getLocation())) {
             try {
-                Set<Location> neighbours = world.getEmptySurroundingTiles(this.location);
+                Set<Location> neighbours = world.getEmptySurroundingTiles(den.getLocation());
                 if (!neighbours.isEmpty()) {
                     ArrayList<Location> list = new ArrayList<>(neighbours);
                     Location l = list.get((int) (Math.random() * list.size()));

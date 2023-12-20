@@ -63,7 +63,7 @@ public class inputReader {
         String type = parts[0];
         String[] quantity = parts[1].contains("fungi") ? parts[parts.length - 1].split("-") : parts[1].split("-");
 
-//            parts[1].split("-");
+
         int min = Integer.parseInt(quantity[0]);
         int max = quantity.length > 1 ? Integer.parseInt(quantity[1]) : min;
 
@@ -117,7 +117,6 @@ public class inputReader {
     }
 
     public Program getP() {
-        System.out.println("succes");
         return p;
     }
 }
