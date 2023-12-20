@@ -61,9 +61,9 @@ public class inputReader {
         Random r = new Random();
         String[] parts = input.split(" ");
         String type = parts[0];
-        String[] quantity = parts[parts.length - 1].split("-");
+        String[] quantity = parts[1].contains("fungi") ? parts[parts.length - 1].split("-") : parts[1].split("-");
 
-
+//            parts[1].split("-");
         int min = Integer.parseInt(quantity[0]);
         int max = quantity.length > 1 ? Integer.parseInt(quantity[1]) : min;
 
@@ -94,7 +94,7 @@ public class inputReader {
                     break;
                 case "bear":
                     if (parts.length>=3) {
-                        String territory[] = parts[parts.length].split("");
+                        String territory[] = parts[parts.length-1].split("");
                          int x  = Integer.parseInt(territory[1]);
                          int y = Integer.parseInt(territory[3]);
                         Location location = new Location(x,y);
@@ -106,7 +106,7 @@ public class inputReader {
                     break;
                 case "berry":
                     Berry berry = new Berry(world);
-                    berry.randomSpawn(berry,world);
+                    berry.randomSpawnNonBlocking(berry,world);
                     break;
                 case "fungi":
                     Fungi fungi = new Fungi(world);

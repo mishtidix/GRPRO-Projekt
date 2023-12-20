@@ -30,6 +30,7 @@ eat();
 
     @Override
     public void move(World world){
+        location = world.getLocation(this);
         Path path = new Path(territory, location);
         Set<Location> neighbours = path.getPathAround(world);
         ArrayList<Location> list = new ArrayList<>(neighbours);
