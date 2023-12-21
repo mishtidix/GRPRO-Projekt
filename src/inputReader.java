@@ -7,9 +7,9 @@ import java.io.*;
 import java.util.Random;
 
 public class inputReader {
-    String file;
-    World world;
-    Program p;
+    private final String file;
+    private World world;
+    private Program p;
 
     public inputReader(String file) throws IOException {
         if (file==null)throw new IllegalArgumentException("file cannot be null");
@@ -44,7 +44,6 @@ public class inputReader {
         File file = new File(this.file);
         BufferedReader br = new BufferedReader(new FileReader(file));
         String input;
-        int lineCount = 0;
         for (int i = 0 ; i<1; i++) {
             input= br.readLine();
             int size = Integer.parseInt(input);//tørrelsen af vores 'map' (dette er altid kvadratisk)

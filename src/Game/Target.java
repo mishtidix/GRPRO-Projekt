@@ -6,10 +6,10 @@ import java.util.*;
 
 
 public class Target {
-    private World world;
-    private int currentX;
-    private int currentY;
-    private Entity me;
+    private final World world;
+    private final int currentX;
+    private final int currentY;
+    private final Entity me;
     /**
      * The point of this class is to find the best option of a specific sub-class of Entity
      * So for example when Rabbit needs to find a burrow to sleep in, then it will call this class.

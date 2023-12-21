@@ -62,7 +62,9 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
             ArrayList<Entity> prey = new ArrayList<>();
             for(Location l : list){
                 if(world.getTile(l) instanceof Animal){
-
+                    world.delete(world.getTile(l));
+                    isFull=true;
+                    count=0;
                 }
             }
         }
