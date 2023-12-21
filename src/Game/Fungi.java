@@ -30,14 +30,14 @@ public class Fungi extends Entity implements Actor, DynamicDisplayInformationPro
         Carcass carcass1 = (Carcass) target.getBestTarget(Carcass.class);
         if (!(carcass1 == null)) {
             //hvis det lykkes at finde et nyt carcass, så går infectedCount op
-            infectedCount = infectedCount + 2;
+            infectedCount = infectedCount + 1;
             if (!carcass1.isInfected()) {
                 //hvis det carcass ikke er infected så bliver det infected
                 carcass1.setFungi(new Fungi(world, carcass1.getMaxHp()));
             }
         } else {
             //hvis der ikke var nogen carcass så går infectedCount ned, og hvis den bliver 0 eller der under bliver den slettet
-            infectedCount = infectedCount - 5;
+            infectedCount = infectedCount - 7;
             if (infectedCount <= 0) {
                 world.delete(this);
             }

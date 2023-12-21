@@ -25,7 +25,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-inputReader in = new inputReader("data/t3-2ab.txt");
+inputReader in = new inputReader("data/t4-1a.txt");
 in.readInput();
         Program p = in.getP();
 

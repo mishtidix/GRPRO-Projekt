@@ -115,6 +115,7 @@ public class inputReader {
                 case "fox":
                     Fox fox = new Fox(world);
                     fox.randomSpawn(fox,world);
+                    break;
             }
         }
 

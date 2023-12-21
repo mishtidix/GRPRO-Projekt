@@ -32,6 +32,7 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         this.maxCount=20;
         this.MaxHp = 45;
 this.denProb = 25;
+        
     }
 
     private Set<Entity> getEntitiesAsSet(World world) {

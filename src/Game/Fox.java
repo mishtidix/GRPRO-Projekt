@@ -25,7 +25,8 @@ public class Fox extends Animal implements Actor, DynamicDisplayInformationProvi
     public Fox(World world) {
         super(world);
         this.energy = MAX_ENERGY;
-
+    maxCount=20;
+    MaxHp=40;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class Fox extends Animal implements Actor, DynamicDisplayInformationProvi
         move(world);
         reproduce(world);
         hunt(world);
+        die(world,45);
     }
 
     @Override
@@ -43,11 +45,11 @@ public class Fox extends Animal implements Actor, DynamicDisplayInformationProvi
     private void hunt(World world) {
         Location preyLocation = findPreyLocation(world);
         if (preyLocation != null) {
-            Set<Entity> entities = (Set<Entity>) world.getEntities();
-            for (Entity entity : entities) {
-                if (entity instanceof Rabbit) {
+            Set<Object> entities = world.getEntities().keySet();
+            for (Object object : entities) {
+                if (object instanceof Rabbit && count>15) {
                     energy += 10; // gain 10 energy points
-                    world.delete(entity);
+                    world.delete(object);
                     break; // assuming there is only 1 rabbit at preyLocation
                 }
             }
@@ -74,7 +76,7 @@ public class Fox extends Animal implements Actor, DynamicDisplayInformationProvi
 
                 if (!emptyLocations.isEmpty()) {
                     Location randomEmptyLocation = new ArrayList<>(emptyLocations).get(random.nextInt(emptyLocations.size()));
-                    world.setTile(randomEmptyLocation, new Game.Wolf(world));
+                    world.setTile(randomEmptyLocation, new Game.Fox(world));
                     canReproduce = false;
                 }
             }

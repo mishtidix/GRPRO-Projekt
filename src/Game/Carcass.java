@@ -42,9 +42,9 @@ public class Carcass extends Entity {
         if (currentHp<= 0){
             fullyDecay();
         }
-      currentHp= currentHp-5;
+      currentHp= currentHp-7;
       if (isInfected){
-          currentHp= currentHp-5;
+          currentHp= currentHp-7;
           this.fungi.addInfectedCount();
       } else if(currentHp<25){
           fungi = new Fungi(world, MaxHp);

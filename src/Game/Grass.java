@@ -28,7 +28,7 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     public Grass(World world) {
         //*Vi har tilføjet to variabler: HP for hvor mange gange græsset skal spise
         super(world);
-        this.spreadCooldown = 150;
+        this.spreadCooldown = 250;
     }
 
 

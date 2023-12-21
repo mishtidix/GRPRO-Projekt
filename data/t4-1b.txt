@@ -1,0 +1,4 @@
+10
+rabbit 3-5
+grass 6
+fox 3-5

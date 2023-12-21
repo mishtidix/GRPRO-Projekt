@@ -1,0 +1,7 @@
+15
+rabbit 3-5
+wolf 2-4
+bear 2
+grass 6
+carcass fungi 2-6
+fox 3-5
