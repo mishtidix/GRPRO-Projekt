@@ -166,6 +166,10 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         burrowProb = 0;
     }
     public int getCounter() {
+        return count;
+    }
+
+    public int getMaxCounter () {
         return maxCount;
     }
 
