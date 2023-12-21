@@ -8,8 +8,8 @@ import itumulator.world.World;
 import java.awt.*;
 
 public class Fungi extends Entity implements Actor, DynamicDisplayInformationProvider {
-    Carcass carcass;
-    int infectedCount;
+    private Carcass carcass;
+    private int infectedCount;
     public Fungi(World world){//constructor
         super(world);
         infectedCount = 25;
@@ -18,41 +18,46 @@ public class Fungi extends Entity implements Actor, DynamicDisplayInformationPro
         super(world);
         this.infectedCount = infectedCount/2;
     }
+    /**
+     * This method checks whether the fungi should keep growing or start decaying
+     * if the fungi has a carcass then it will keep growing otherwise it will find a new carcass to spread to
+     * if there is no carcass it will start decaying rapidly until its infectedcount is zero or below then it will remove itself from the world
+     */
 
     public void spread() {
-    //hvis fungi er i en carcass så bliver infectedCount ved med at gå op
-    if (!(carcass == null)) {
-        infectedCount = infectedCount + 2;
-    } else {
-        //hvis den ikke har nogen carcass, så prøver den at finde et carcass at sprede sig til
-        this.location = world.getLocation(this);
-        Target target = new Target(world, location, this);
-        Carcass carcass1 = (Carcass) target.getBestTarget(Carcass.class);
-        if (!(carcass1 == null)) {
-            //hvis det lykkes at finde et nyt carcass, så går infectedCount op
-            infectedCount = infectedCount + 1;
-            if (!carcass1.isInfected()) {
-                //hvis det carcass ikke er infected så bliver det infected
-                carcass1.setFungi(new Fungi(world, carcass1.getMaxHp()));
-            }
+
+        if (!(carcass == null)) {
+            infectedCount = infectedCount + 2;
         } else {
-            //hvis der ikke var nogen carcass så går infectedCount ned, og hvis den bliver 0 eller der under bliver den slettet
-            infectedCount = infectedCount - 7;
-            if (infectedCount <= 0) {
-                world.delete(this);
+
+            this.location = world.getLocation(this);
+            Target target = new Target(world, location, this);
+            Carcass carcass1 = (Carcass) target.getBestTarget(Carcass.class);
+            if (!(carcass1 == null)) {
+
+                infectedCount = infectedCount + 1;
+                if (!carcass1.isInfected()) {
+
+                    carcass1.setFungi(new Fungi(world, carcass1.getMaxHp()));
+                }
+            } else {
+
+                infectedCount = infectedCount - 7;
+                if (infectedCount <= 0) {
+                    world.delete(this);
+                }
             }
         }
     }
-}
 
-@Override
+    @Override
     public DisplayInformation getInformation() {
-        //display information ændre sig i forhold til størrelse af fungi
-       if (carcass == null && infectedCount>=25 && infectedCount<=34){
-           return new DisplayInformation(Color.red, "fungi-small");
-       } else if (carcass == null && infectedCount>=35) {
-           return new DisplayInformation(Color.red, "fungi");
-       }
+
+        if (carcass == null && infectedCount>=25 && infectedCount<=34){
+            return new DisplayInformation(Color.red, "fungi-small");
+        } else if (carcass == null && infectedCount>=35) {
+            return new DisplayInformation(Color.red, "fungi");
+        }
         return new DisplayInformation(Color.green);
     }
 
@@ -65,7 +70,7 @@ public class Fungi extends Entity implements Actor, DynamicDisplayInformationPro
     public void setCarcass(Carcass carcass) {
         this.carcass = carcass;
     }
-public void addInfectedCount(){
+    public void addInfectedCount(){
         this.infectedCount=this.infectedCount+2;
-}
+    }
 }

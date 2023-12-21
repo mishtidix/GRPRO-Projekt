@@ -11,7 +11,7 @@ public class Carcass extends Entity {
     private  int currentHp;
     private boolean isInfected;
 
-    Fungi fungi;
+    private Fungi fungi;
 
 
 
@@ -38,19 +38,27 @@ public class Carcass extends Entity {
         this.location = world.getLocation(this);
         Decay();
     }
+    /**
+     * This method simply makes the carcass slowly decay overtime and it decays faster if its infected
+     * if it's currentHp drops to 0 or below then it will call the method fullyDecay to remove itself
+     */
+
     private void Decay(){
         if (currentHp<= 0){
             fullyDecay();
         }
-      currentHp= currentHp-7;
-      if (isInfected){
-          currentHp= currentHp-7;
-          this.fungi.addInfectedCount();
-      } else if(currentHp<25){
-          fungi = new Fungi(world, MaxHp);
-          fungi.setCarcass(this);
-          isInfected=true;
-      }
+        currentHp= currentHp-7;
+        if (isInfected){
+            currentHp= currentHp-7;
+            this.fungi.addInfectedCount();
+        } else if(currentHp<25){
+            fungi = new Fungi(world, MaxHp);
+            fungi.setCarcass(this);
+            isInfected=true;
+        }
+/**
+ * if an animal is eating a carcass then they will call this method and that will decrease currentHp and if it falls to zero or below then it will call fully decay
+ */
 
     }
     public void beingEaten(){

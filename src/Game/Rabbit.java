@@ -11,7 +11,6 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
     private Burrow burrow;
     private Grass grass;
     private int burrowProb;
-    private boolean theEnd;
     public Rabbit(World world){
         super(world);
         this.burrowProb = 25;
@@ -64,6 +63,9 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             die(world, 50);
         }
     }
+    /**
+     * first calls digBurrow, then uses target to find an existing burrow in the world
+     */
 
     public void setBurrow(){
         digBurrow();
@@ -72,11 +74,20 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         this.burrow = (Burrow)findBurrow.getBestTarget(Burrow.class);
 
     }
+    /**
+     * Using the Target class, this method finds and set grass to a grass that exist in the world.
+     */
 
     public void setGrass(){
         Target findGrass = new Target(this.world, this.location, this);
         this.grass = (Grass)findGrass.getBestTarget(Grass.class);
     }
+    /**
+     * When this method is called, first the Rabbit checks to see if grass is null, if it is then it calls the method setGrass
+     * afterward, count is counted upward, and then if grass is no longer null and then if the location of grass and the location of Rabbit is the same
+     * then isFull becomes true beenEaten from grass is called and count is reduced to zero.
+     * @param world
+     */
 
     public void eat(World world){
         if (grass == null){
@@ -104,12 +115,19 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         }
         return new DisplayInformation(Color.GRAY, "rabbit-large");
     }
+    /**
+     * returns a new Rabbit when reproduce in Animal calls createChild
+     * @return
+     */
 
     public Animal createChild(){
         return new Rabbit(world);
 
     }
-
+    /**
+     * makes a new burrow if the burrowProb is equal or below 0, if not then it reduce burrowProb by a random number.
+     * when making a new burrow, it takes the location of the Rabbit and using world.setTile then sets the new burrow to said the location.
+     */
     public void digBurrow(){
         if(burrowProb <= 0 && !world.containsNonBlocking(this.getLocation())){
             Burrow burrow1 =new Burrow(this.world);
@@ -121,6 +139,10 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
             burrowProb = burrowProb - rnd.nextInt(5);
         }
     }
+    /**
+     * The enterBurrow method, makes a Rabbit remove it self from the map and set sleeping to true if it's location to null
+     * if it doesnt have a burrow to begin with then it calls the method setburrow to find a burrow
+     */
 
     public void enterBurrow(){
         if(burrow == null) {
@@ -137,6 +159,11 @@ public class Rabbit extends Animal implements Actor, DynamicDisplayInformationPr
         }
     }
 
+    /**
+     * This method is called when a Rabbit needs to exit its burrow
+     * its uses the getEmptySurroundingTiles method from world to get the empty tiles around the burrow
+     * then set the Rabbits location to one of those empty tiles
+     */
 
 
     public void exitBurrow(){

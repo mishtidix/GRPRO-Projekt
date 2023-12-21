@@ -38,21 +38,26 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
     }
 
     public void move(World world) {
-       if( world.getEntities().containsKey(this)){
-        this.location = world.getLocation(this);
-        Set<Location> neighbours = world.getEmptySurroundingTiles(location);
-        ArrayList<Location> list = new ArrayList<>(neighbours);
-        if (!list.isEmpty()) {
-            Location l = list.get((int) (Math.random() * list.size()));
-            while (!world.isTileEmpty(l) && !safeForPredators(world, l)) {
-                l = list.get((int) (Math.random() * list.size()));
-            }
-            this.location = l;
+        if( world.getEntities().containsKey(this)){
+            this.location = world.getLocation(this);
+            Set<Location> neighbours = world.getEmptySurroundingTiles(location);
+            ArrayList<Location> list = new ArrayList<>(neighbours);
+            if (!list.isEmpty()) {
+                Location l = list.get((int) (Math.random() * list.size()));
+                while (!world.isTileEmpty(l) && !safeForPredators(world, l)) {
+                    l = list.get((int) (Math.random() * list.size()));
+                }
+                this.location = l;
 
-            world.move(this, l);
-        }
+                world.move(this, l);
+            }
         }
     }
+    /**
+     * moveGoal is like move, in that the point is to move the animal, this just uses our homemade class Path to find the best way to move to specific location
+     * @param goal
+     */
+
     public void moveGoal(Location goal){
         if (world.getEntities().containsKey(this)) {
             if (goal != null) {
@@ -65,6 +70,10 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
             }
         }
     }
+    /**
+     * This method simply increase the animals age, and makes it possible for it to reproduce
+     */
+
     public void aging(){
         age++;
         if(this.age % 20 == 0 && this.age<=30){
@@ -76,6 +85,11 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
 
 
     protected abstract void eat(World world);
+    /**
+     * This method makes another animal if reproduce is true while sleeping is not true then using some of the same methods as Animals move,
+     * we find an empty space and put a new instance of animal there using the abstract method createChild on that empty space.
+     * @param world
+     */
 
     protected void reproduce(World world) {
         if (!sleeping) {
@@ -90,9 +104,9 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
                     while (!world.isTileEmpty(l)) {
                         l = list.get((int) (Math.random() * list.size()));
                     }
-                Animal child = createChild();
-                world.setTile(l,child);
-                child.setLocation(l);
+                    Animal child = createChild();
+                    world.setTile(l,child);
+                    child.setLocation(l);
 
 
                     this.canReproduce = false;
@@ -100,7 +114,18 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
             }
         }
     }
+    /**
+     * an abstract method where each subclass of animal can insert a different return value
+     * @return
+     */
+
     public abstract Animal createChild();
+
+    /**
+     *This method simply deletes the current animal and sets in its place a carcass that is aproproiate to the animal
+     * @param world
+     * @param Carcasshp
+     */
 
     void die(World world, int Carcasshp) {
         if (!sleeping && location != null) {
@@ -117,30 +142,26 @@ public abstract class Animal extends Entity implements Actor,DynamicDisplayInfor
         }
     }
 
-    protected  void kill(World world, Animal prey){
-        world.delete(prey);
-        this.count =0;
-        this.isFull= true;
-    }
+
 
     private boolean safeForPredators(World world, Location tile){
-Set<Location> set = world.getSurroundingTiles(tile);
-ArrayList<Location> list = new ArrayList<>(set);
-ArrayList<Location> checkedList = new ArrayList<>();
-for (int i=0 ; i<list.size(); i++){
-    if (!world.isTileEmpty(list.get(i))){
-        checkedList.add(list.get(i));
-    }
-}
-for (int i = 0; i<checkedList.size(); i++){
-    Object object = world.getTile(checkedList.get(i));
-    for (Class o : Predators) {
-        if (object.getClass()==o){
-            return false;
+        Set<Location> set = world.getSurroundingTiles(tile);
+        ArrayList<Location> list = new ArrayList<>(set);
+        ArrayList<Location> checkedList = new ArrayList<>();
+        for (int i=0 ; i<list.size(); i++){
+            if (!world.isTileEmpty(list.get(i))){
+                checkedList.add(list.get(i));
+            }
         }
-    }
-}
-return  true;
+        for (int i = 0; i<checkedList.size(); i++){
+            Object object = world.getTile(checkedList.get(i));
+            for (Class o : Predators) {
+                if (object.getClass()==o){
+                    return false;
+                }
+            }
+        }
+        return  true;
     }
 
 

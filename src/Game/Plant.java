@@ -2,11 +2,7 @@ package Game;
 import java.time.*;
 
 import itumulator.world.*;
-import itumulator.executable.*;
-import java.awt.*;
 
-import itumulator.simulator.*;
-import java.util.*;
 public abstract class Plant extends Entity {
 
     public int age;
@@ -36,7 +32,7 @@ public abstract class Plant extends Entity {
         if (this.HP <= 0) {
             if (world.getEntities().containsKey(this)){
 //            world.remove(this);
-            world.delete(this);
+                world.delete(this);
             }
         }
     }

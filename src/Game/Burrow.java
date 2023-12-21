@@ -4,7 +4,7 @@ import itumulator.executable.*;
 import java.awt.*;
 
 import itumulator.simulator.*;
-import java.util.*;
+
 
 public class Burrow extends Entity implements NonBlocking, Actor, DynamicDisplayInformationProvider {
 

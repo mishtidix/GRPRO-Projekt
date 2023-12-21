@@ -17,11 +17,9 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
     private boolean isFull;
     private boolean Alpha;
     private final Location Den; // Renamed Den to den for consistency
-    private static final int MAX_ATTEMPTS = 10; // Added maximum attempts for the exitDen loop
-    int i = 0;
-    Rabbit rabbit;
-    Den den;
-    int denProb;
+    private Rabbit rabbit;
+    private Den den;
+    private int denProb;
 
 
     public Wolf(World world) {
@@ -31,8 +29,8 @@ public class Wolf extends Animal implements Actor, DynamicDisplayInformationProv
         this.Den = null;
         this.maxCount=20;
         this.MaxHp = 45;
-this.denProb = 25;
-        
+        this.denProb = 25;
+
     }
 
     private Set<Entity> getEntitiesAsSet(World world) {
@@ -113,10 +111,10 @@ this.denProb = 25;
         if (rabbit != null) {
             Location preyLocation = rabbit.getLocation();
             if (preyLocation!=null){
-            if (this.location.getX() == preyLocation.getX() && this.location.getY() == preyLocation.getY()) {
-                isFull = true;
-                this.count = 0;
-            }
+                if (this.location.getX() == preyLocation.getX() && this.location.getY() == preyLocation.getY()) {
+                    isFull = true;
+                    this.count = 0;
+                }
             }
         }
         if (count > 10) {
@@ -199,16 +197,16 @@ this.denProb = 25;
                     while (!world.isTileEmpty(l)) {
                         l = list.get((int) (Math.random() * list.size()));
                     }
-                      this.sleeping = false;
-                      world.setTile(l, this);
-                      this.location = l;
+                    this.sleeping = false;
+                    world.setTile(l, this);
+                    this.location = l;
                 }
             }catch (Exception e){
                 e.printStackTrace();
             }
 
         }
-        }
+    }
 
 
     protected void reproduce(World world) {

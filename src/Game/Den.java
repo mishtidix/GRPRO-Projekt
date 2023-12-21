@@ -2,8 +2,6 @@ package Game;
 import itumulator.simulator.Actor;
 import itumulator.world.*;
 import itumulator.executable.*;
-import itumulator.simulator.*;
-import java.util.*;
 import java.awt.*;
 public class Den extends Entity implements NonBlocking, Actor, DynamicDisplayInformationProvider {
 

@@ -14,7 +14,7 @@ public class inputReader {
     public inputReader(String file) throws IOException {
         if (file==null)throw new IllegalArgumentException("file cannot be null");
         this.file=file;
-       makeProgram();
+        makeProgram();
     }
 
     public void readInput() throws IOException {
@@ -47,13 +47,13 @@ public class inputReader {
         int lineCount = 0;
         for (int i = 0 ; i<1; i++) {
             input= br.readLine();
-                int size = Integer.parseInt(input);//tørrelsen af vores 'map' (dette er altid kvadratisk)
-                int delay = 200; // forsinkelsen mellem hver skridt af simulationen (i ms)
-                int display_size = 800; // skærm oplysningen (i px)
+            int size = Integer.parseInt(input);//tørrelsen af vores 'map' (dette er altid kvadratisk)
+            int delay = 200; // forsinkelsen mellem hver skridt af simulationen (i ms)
+            int display_size = 800; // skærm oplysningen (i px)
 
 
-                this.p = new Program(size, display_size, delay); // opret et nyt program
-                this.world = p.getWorld();
+            this.p = new Program(size, display_size, delay); // opret et nyt program
+            this.world = p.getWorld();
 
         }
     }
@@ -95,8 +95,8 @@ public class inputReader {
                 case "bear":
                     if (parts.length>=3) {
                         String territory[] = parts[parts.length-1].split("");
-                         int x  = Integer.parseInt(territory[1]);
-                         int y = Integer.parseInt(territory[3]);
+                        int x  = Integer.parseInt(territory[1]);
+                        int y = Integer.parseInt(territory[3]);
                         Location location = new Location(x,y);
                         world.setTile(location, new Bear(world,location));
                     }else {

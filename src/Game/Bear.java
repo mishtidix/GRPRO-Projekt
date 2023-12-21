@@ -10,7 +10,7 @@ import java.util.*;
 public class Bear extends Animal implements Actor, DynamicDisplayInformationProvider
 {
 
-    Location territory;
+    private Location territory;
     public Bear(World world, Location current){
 
         super(world);
@@ -21,11 +21,11 @@ public class Bear extends Animal implements Actor, DynamicDisplayInformationProv
 
     public void act(World world){
         super.act(world);
-if (territory== null){
-    territory = world.getLocation(this);
-}
-move(world);
-eat();
+        if (territory== null){
+            territory = world.getLocation(this);
+        }
+        move(world);
+        eat();
         die(world, 100);
     }
 
@@ -76,20 +76,20 @@ eat();
         return MaxHp;
     }
 
-private boolean sleeping;
+    private boolean sleeping;
 
 
     public boolean isSleeping (){
         return sleeping;
-}
+    }
 
-public void bearSleeps (World world) {
+    public void bearSleeps (World world) {
         if (world.isNight()) {
             sleeping = true;
         }      else {
             sleeping = false;
         }
-}
+    }
 
 
     @Override

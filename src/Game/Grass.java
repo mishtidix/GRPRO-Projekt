@@ -5,17 +5,12 @@ import java.awt.*;
 
 import itumulator.simulator.*;
 
-import java.lang.reflect.*;
-import java.util.*;
-import itumulator.world.Location.*;
 
-import static itumulator.world.World.getTotalDayDuration;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.when;
+import java.util.*;
+
 
 public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayInformationProvider {
-    private static final int SPREAD_PROBABILITY = 25;
-    private static final int SPREAD_COOLDOWN = 5;
+
     private int spreadCooldown;
 
     private Random rnd;
@@ -55,9 +50,9 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
 
             } catch (Exception e){
 
-                }
-
             }
+
+        }
 
     }
 
@@ -91,7 +86,6 @@ public class Grass extends Plant implements NonBlocking, Actor, DynamicDisplayIn
     @Override
     public void act(World world) {
         super.act(world);
-        //this.location=world.getLocation(this);
         spread();
         readyToSpread();
         aging();

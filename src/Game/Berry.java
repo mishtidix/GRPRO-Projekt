@@ -6,7 +6,6 @@ import itumulator.world.*;
 import java.awt.*;
 
 public class Berry extends Plant implements NonBlocking, DynamicDisplayInformationProvider {
-    //private int eatable;
 
     public Berry(World world) {
         super(world);
