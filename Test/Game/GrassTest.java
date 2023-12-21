@@ -53,6 +53,10 @@ class GrassTest {
         assertNotNull(initLoc);
     }
 
+    /**
+     * Tester om grasset kan blive spist og forsvinde
+     */
+
     @Test
     public void grassGetsEaten() {
         Location initLoc = new Location(1,1);

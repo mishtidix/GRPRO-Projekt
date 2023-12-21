@@ -33,6 +33,7 @@ public class Fox extends Animal implements Actor, DynamicDisplayInformationProvi
         super.act(world);
         move(world);
         reproduce(world);
+        hunt(world);
     }
 
     @Override

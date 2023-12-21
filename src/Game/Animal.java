@@ -157,6 +157,10 @@ return  true;
         this.age = age;
     }
 
+    public void setCanReproduce (boolean canReproduce) {
+        this.canReproduce = true;
+    }
+
 
     @Override
     public DisplayInformation getInformation(){

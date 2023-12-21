@@ -38,6 +38,10 @@ public class Berry extends Plant implements NonBlocking, DynamicDisplayInformati
         return true;
     }
 
+    public int getHP() {
+        return HP;
+    }
+
     @Override
     public DisplayInformation getInformation() {
         if(age < 10){
